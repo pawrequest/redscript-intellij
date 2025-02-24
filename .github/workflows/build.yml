@@ -73,7 +73,11 @@ jobs:
 
       # Build plugin
       - name: Build plugin
-        run: ./gradlew buildPlugin
+        env:
+          GPR_USER: ${{ secrets.USERNAME_GITHUB }}  # Pass the username secret
+          GPR_KEY: ${{ secrets.PUBLISH_TOKEN }}     # Pass the token secret
+        run: ./gradlew buildPlugin -Pgpr.user=$GPR_USER -Pgpr.key=$GPR_KEY
+#        run: ./gradlew buildPlugin
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
@@ -117,7 +121,10 @@ jobs:
 
       # Run tests
       - name: Run Tests
-        run: ./gradlew check
+        env:
+          GPR_USER: ${{ secrets.USERNAME_GITHUB }}  # Pass the username secret
+          GPR_KEY: ${{ secrets.PUBLISH_TOKEN }}     # Pass the token secret
+        run: ./gradlew check -Pgpr.user=$GPR_USER -Pgpr.key=$GPR_KEY
 
       # Collect Tests Result of failed tests
       - name: Collect Tests Result
@@ -209,7 +216,10 @@ jobs:
 
       # Run Verify Plugin task and IntelliJ Plugin Verifier tool
       - name: Run Plugin Verification tasks
-        run: ./gradlew verifyPlugin -Dplugin.verifier.home.dir=${{ needs.build.outputs.pluginVerifierHomeDir }}
+        env:
+          GPR_USER: ${{ secrets.USERNAME_GITHUB }}  # Pass the username secret
+          GPR_KEY: ${{ secrets.PUBLISH_TOKEN }}     # Pass the token secret
+        run: ./gradlew verifyPlugin -Dplugin.verifier.home.dir=${{ needs.build.outputs.pluginVerifierHomeDir }} -Pgpr.user=$GPR_USER -Pgpr.key=$GPR_KEY
 
       # Collect Plugin Verifier Result
       - name: Collect Plugin Verifier Result
