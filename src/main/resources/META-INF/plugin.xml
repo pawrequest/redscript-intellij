@@ -1,18 +1,31 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.pawrequest.redscriptideintellij</id>
-    <name>redscript-ide-intellij</name>
+    <id>com.pawrequest.redscript.ide.intellij</id>
+    <name>Rs4ij3</name>
     <vendor>pawrequest</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <depends>com.redhat.devtools.lsp4ij</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.pawrequest.redscriptideintellij.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.ide.intellij.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
+        <applicationService serviceImplementation="com.pawrequest.redscript.ide.intellij.settings.RedscriptSettings"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="redscript"
+                name="RedscriptLanguageServer"
+                factoryClass="com.pawrequest.redscript.ide.intellij.server.RedscriptLanguageServerFactory">
+            <description><![CDATA[
+        RedScript4IJ language server
+        ]]>
+            </description>
+        </server>
+        <fileNamePatternMapping patterns="*.reds"
+                                serverId="redscript"
+                                languageId="reds"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.pawrequest.redscriptideintellij.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
     </applicationListeners>
 </idea-plugin>
