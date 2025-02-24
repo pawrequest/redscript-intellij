@@ -1,4 +1,4 @@
-package com.pawrequest.redscript.ide.intellij.settings
+package com.pawrequest.redscript.ide.settings
 
 
 import com.intellij.openapi.components.PersistentStateComponent

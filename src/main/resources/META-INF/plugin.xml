@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.pawrequest.redscript.ide.intellij</id>
+    <id>com.pawrequest.redscript.ide</id>
     <name>Rs4ij3</name>
     <vendor>pawrequest</vendor>
 
@@ -8,14 +8,14 @@
     <depends>com.redhat.devtools.lsp4ij</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.ide.intellij.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
-        <applicationService serviceImplementation="com.pawrequest.redscript.ide.intellij.settings.RedscriptSettings"/>
+        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.ide.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
+        <applicationService serviceImplementation="com.pawrequest.redscript.ide.settings.RedscriptSettings"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
         <server id="redscript"
                 name="RedscriptLanguageServer"
-                factoryClass="com.pawrequest.redscript.ide.intellij.server.RedscriptLanguageServerFactory">
+                factoryClass="com.pawrequest.redscript.ide.server.RedscriptLanguageServerFactory">
             <description><![CDATA[
         RedScript4IJ language server
         ]]>

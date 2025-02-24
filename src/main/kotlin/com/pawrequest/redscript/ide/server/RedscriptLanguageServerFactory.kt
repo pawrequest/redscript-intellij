@@ -1,4 +1,4 @@
-package com.pawrequest.redscript.ide.intellij.server
+package com.pawrequest.redscript.ide.server
 
 import com.intellij.openapi.project.Project
 import com.redhat.devtools.lsp4ij.LanguageServerFactory

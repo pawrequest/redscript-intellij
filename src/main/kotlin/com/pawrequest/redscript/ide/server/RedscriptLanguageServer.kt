@@ -1,5 +1,5 @@
-package com.pawrequest.redscript.ide.intellij.server
-import com.pawrequest.redscript.ide.intellij.settings.RedscriptSettings
+package com.pawrequest.redscript.ide.server
+import com.pawrequest.redscript.ide.settings.RedscriptSettings
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider
 
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
