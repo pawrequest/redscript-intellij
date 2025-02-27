@@ -2,12 +2,15 @@
 
 <!-- Plugin description -->
 Work in progress   
-IntelliJ plugin for Redscript Modding. entirely dependent on [redscript-ide](https://github.com/jac3km4/redscript-ide)
+IntelliJ plugin for Redscript Modding. entirely dependent on:
+  - [redscript-ide](https://github.com/jac3km4/redscript-ide)
+  - [redscript-syntax-highlighting](https://github.com/jackhumbert/redscript-syntax-highlighting)
+  - [lsp4ij](https://github.com/redhat-developer/lsp4ij)
 <!-- Plugin description end -->
 
 # Requires:
 IntelliJ platform IDE  >= 2024.3.3 (eg IDEA, Pycharm)  
-[LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration
+[LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with redscript-intelliJ)
 
 # ToDo
 
