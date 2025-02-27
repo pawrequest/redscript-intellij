@@ -1,11 +1,11 @@
-package com.pawrequest.redscript.ide.server
-import com.pawrequest.redscript.ide.settings.RedscriptSettings
+package com.pawrequest.redscript.server
+import com.pawrequest.redscript.settings.RedscriptSettings
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider
 
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
     init {
         try {
-            println("RedscriptLanguageServer")
+            println("Fetching Redscript-IDE binary")
             val binaryFile: java.io.File = RedscriptIDEGitHubRepo.getRedscriptIDE()
             println("binaryFile: $binaryFile")
             val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)

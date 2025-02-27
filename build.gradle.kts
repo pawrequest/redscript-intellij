@@ -2,6 +2,7 @@ import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import java.net.URI
 
+
 plugins {
     `maven-publish`
     id("java") // Java support
@@ -136,6 +137,7 @@ publishing {
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
 intellijPlatform {
     pluginConfiguration {
+        name = providers.gradleProperty("pluginName")
         version = providers.gradleProperty("pluginVersion")
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
@@ -165,12 +167,37 @@ intellijPlatform {
     }
 }
 
-
 tasks {
+    val copyVscodeTextMateBundle by registering(Copy::class) {
+        from("./redscript-syntax-highlighting")
+        include("package.json")
+        include("language-configuration.json")
+        include("syntaxes/redscript.tmLanguage.json")
+        include("images/**")
+        into(layout.buildDirectory.dir("resources/main/textmate"))
+    }
+
+    processResources {
+        dependsOn(copyVscodeTextMateBundle)
+    }
+
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
     publishPlugin {
         dependsOn(patchChangelog)
     }
+//    prepareSandbox {
+//        from("redscript-syntax-highlighting"){
+//            include("package.json")
+//            include("language-configuration.json")
+//            include("syntaxes/redscript.tmLanguage.json")
+//            include("images/**")
+//
+//
+//        into("${intellijPlatform.pluginConfiguration.name.get()}/textmate")
+//
+//        }
+//
+//    }
 }

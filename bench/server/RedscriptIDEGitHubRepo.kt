@@ -1,4 +1,4 @@
-package com.pawrequest.redscript.ide.server
+package com.pawrequest.redscript.server
 
 import java.io.File
 import java.nio.file.Path

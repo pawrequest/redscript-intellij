@@ -1,4 +1,4 @@
-package com.pawrequest.redscript.ide.settings
+package com.pawrequest.redscript.settings
 
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.ProjectManager
@@ -38,8 +38,8 @@ class RedscriptConfigurable : Configurable {
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         if (project != null) {
             val languageServerManager = LanguageServerManager.getInstance(project)
-            languageServerManager.stop("redscript")
-            languageServerManager.start("redscript")
+            languageServerManager.stop("textmate")
+            languageServerManager.start("textmate")
         }
     }
 

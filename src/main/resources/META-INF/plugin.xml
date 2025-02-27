@@ -1,30 +1,45 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.pawrequest.redscript.ide</id>
-    <name>Rs4ij3</name>
+    <id>com.pawrequest.redscript</id>
+    <name>Redscript</name>
     <vendor>pawrequest</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.redhat.devtools.lsp4ij</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
+
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.ide.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
-        <applicationService serviceImplementation="com.pawrequest.redscript.ide.settings.RedscriptSettings"/>
+<!--        settings        -->
+        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
+        <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
+
+<!--        textmate     -->
+        <textmate.bundleProvider implementation="com.pawrequest.redscript.lang.RedscriptTextMateBundleProvider" />
+        <fileType
+                name="Redscript"
+                language="Redscript"
+                implementationClass="com.pawrequest.redscript.lang.RedscriptFileType"
+                fieldName="INSTANCE"
+                extensions="reds"
+
+        />
     </extensions>
 
-    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
-        <server id="redscript"
-                name="RedscriptLanguageServer"
-                factoryClass="com.pawrequest.redscript.ide.server.RedscriptLanguageServerFactory">
-            <description><![CDATA[
-        RedScript4IJ language server
-        ]]>
-            </description>
-        </server>
-        <fileNamePatternMapping patterns="*.reds"
-                                serverId="redscript"
-                                languageId="reds"/>
-    </extensions>
+<!--    lsp     -->
+<!--    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">-->
+<!--        <server id="redscript"-->
+<!--                name="RedscriptLanguageServer"-->
+<!--                factoryClass="com.pawrequest.redscript.server.RedscriptLanguageServerFactory">-->
+<!--            <description><![CDATA[-->
+<!--        RedScript4IJ language server-->
+<!--        ]]>-->
+<!--            </description>-->
+<!--        </server>-->
+<!--        <fileNamePatternMapping patterns="*.reds"-->
+<!--                                serverId="redscript"-->
+<!--                                languageId="reds"/>-->
+<!--    </extensions>-->
 
     <applicationListeners>
     </applicationListeners>
