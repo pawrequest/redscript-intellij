@@ -1,4 +1,4 @@
-# Redscript-IDE-IntelliJ
+# Redscript-IntelliJ
 
 <!-- Plugin description -->
 Work in progress   
