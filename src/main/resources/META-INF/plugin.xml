@@ -24,6 +24,17 @@
                 extensions="reds"
 
         />
+
+        <editorHighlighterProvider
+                filetype="Redscript"
+                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />
+
+        <lang.syntaxHighlighterFactory
+                language="Redscript"
+                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateSyntaxHighlighterFactory" />
+
+
+
     </extensions>
 
 <!--    lsp     -->
