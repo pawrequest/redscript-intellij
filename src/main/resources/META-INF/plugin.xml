@@ -27,19 +27,19 @@
     </extensions>
 
 <!--    lsp     -->
-<!--    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">-->
-<!--        <server id="redscript"-->
-<!--                name="RedscriptLanguageServer"-->
-<!--                factoryClass="com.pawrequest.redscript.server.RedscriptLanguageServerFactory">-->
-<!--            <description><![CDATA[-->
-<!--        RedScript4IJ language server-->
-<!--        ]]>-->
-<!--            </description>-->
-<!--        </server>-->
-<!--        <fileNamePatternMapping patterns="*.reds"-->
-<!--                                serverId="redscript"-->
-<!--                                languageId="reds"/>-->
-<!--    </extensions>-->
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="redscript"
+                name="RedscriptLanguageServer"
+                factoryClass="com.pawrequest.redscript.server.RedscriptLanguageServerFactory">
+            <description><![CDATA[
+        RedScript4IJ language server
+        ]]>
+            </description>
+        </server>
+        <fileNamePatternMapping patterns="*.reds"
+                                serverId="redscript"
+                                languageId="reds"/>
+    </extensions>
 
     <applicationListeners>
     </applicationListeners>
