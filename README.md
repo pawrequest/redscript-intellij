@@ -35,6 +35,5 @@ nb. i dont have a clue what i'm doing. use at your own risk.
       OR:
     - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)
 
-install zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
-set CP2077 install dir in settings -> Tools -> Redscript
-
+- Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+- Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
