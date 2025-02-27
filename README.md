@@ -28,7 +28,7 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 
 nb. i dont have a clue what i'm doing. use at your own risk.
 
-Usage:
+# Usage:
 - Update IDE to 2024.3.3 or later
 - Get plugin zip - either:
     - clone and build with intellij platform buildPlugin  
