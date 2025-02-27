@@ -36,4 +36,5 @@ Usage:
     - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)
 
 install zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+set CP2077 install dir in settings -> Tools -> Redscript
 
