@@ -50,9 +50,6 @@ object RedscriptFileType : FileType, TextMateBackedFileType {
 
     override fun getIcon(): Icon = RedscriptIcons.REDSCRIPT_FILE
     override fun isBinary(): Boolean = false
-
-//    companion object {
-//    }
 }
 
 
