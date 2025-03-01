@@ -22,7 +22,7 @@ class RedscriptIDEGitHubRepo : GitHubRepo("redscript-ide", GitHubUser("jac3km4")
         }
 
         private fun platformBinaryName(): String {
-            print("getting os.name: ")
+            println("getting os.name: ")
             val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
 
             return if (osName.contains("win")) {

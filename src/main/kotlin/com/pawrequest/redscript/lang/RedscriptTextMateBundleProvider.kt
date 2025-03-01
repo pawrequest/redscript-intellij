@@ -12,16 +12,16 @@ import java.util.*
 
 //class RedscriptTextMateBundleProvider : TextMateBundleProvider {
 //    override fun getBundles(): List<PluginBundle> {
-//        print("GETTING TEXTMATEDIR")
-//        print("GETTING TEXTMATEDIR")
-//        print("GETTING TEXTMATEDIR")
-//        print("GETTING TEXTMATEDIR")
-//        print("GETTING TEXTMATEDIR")
-//        print("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
 //        val textmateDir = PluginPathManager.getPluginResource(javaClass, "textmate") ?: return emptyList()
-//        print("textmateDir: $textmateDir \n")
+//        println("textmateDir: $textmateDir \n")
 //        val path = textmateDir.toPath()
-//        print("path: $path \n")
+//        println("path: $path \n")
 //        return listOf(PluginBundle("Redscript", path))
 //    }
 //}
@@ -29,19 +29,19 @@ import java.util.*
 
 //class RedscriptTextMateBundleProvider : TextMateBundleProvider {
 //    override fun getBundles(): List<PluginBundle> {
-//        print("GETTING TEXTMATEDIR\n")
-//        print("GETTING TEXTMATEDIR\n")
-//        print("GETTING TEXTMATEDIR\n")
-//        print("GETTING TEXTMATEDIR\n")
-//        print("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
 //        val tmPathStr = getPluginResource(javaClass, "textmate")
-//        print("tmPathStr: $tmPathStr \n")
+//        println("tmPathStr: $tmPathStr \n")
 //        val tmPath = tmPathStr?.toPath() ?: throw IllegalStateException("Failed to locate TextMate bundle directory")
 ////        val packageJson = tmPath.resolve("package.json").exists()
 ////        if (!packageJson) {
 ////            throw IllegalStateException("Failed to locate package.json in TextMate bundle directory")
 ////        }
-//        print("GETTING TEXTMATEDIR\n")
+//        println("GETTING TEXTMATEDIR\n")
 //        return listOf(PluginBundle("redscript", tmPath))
 //    }
 //}
@@ -66,12 +66,12 @@ import java.util.*
 //
 //
 //    override fun getBundles(): List<TextMateBundleProvider.PluginBundle> {
-//        print("GETTING TEXTMATEDIR")
+//        println("GETTING TEXTMATEDIR")
 //        val bundleDir = PluginPathManager.getPluginResource(
 //            javaClass,
 //            "textmate"
 //        )
-//        print("bundleDir: $bundleDir \n")
+//        println("bundleDir: $bundleDir \n")
 //
 //        log.info("Loading TextMate bundle from: ${bundleDir?.absolutePath ?: "NULL"}")
 //

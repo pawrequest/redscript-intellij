@@ -35,7 +35,7 @@ class RedscriptConfigurable : Configurable {
     }
 
     private fun restartLanguageServer() {
-        print("RESTARTING LANGUAGE SERVER\n")
+        println("RESTARTING LANGUAGE SERVER\n")
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         if (project != null) {
             val languageServerManager = LanguageServerManager.getInstance(project)
