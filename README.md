@@ -8,7 +8,7 @@ IntelliJ plugin for Redscript Modding. entirely dependent on:
   - [lsp4ij](https://github.com/redhat-developer/lsp4ij)
 <!-- Plugin description end -->
 
-# Requires:
+# Requires
 IntelliJ platform IDE  >= 2024.3.3 (eg IDEA, Pycharm)  
 [LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with redscript-intelliJ)
 
@@ -28,12 +28,28 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 
 nb. i dont have a clue what i'm doing. use at your own risk.
 
-# Usage:
-- Update IDE to 2024.3.3 or later
-- Get plugin zip - either:
+# Usage
+1. Update IDE to 2024.3.3 or later
+2. Get plugin zip - either:
     - clone and build with intellij platform buildPlugin  
       OR:
     - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)
 
-- Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
-- Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
+3. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+4. Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
+5. Any definitions you want to reference must exist in the editor. i.e. if you want to GoToDefinition on a function, that function must be in the editor.  
+use `settings -> project -> project structure` to add workspace folders in pycharm. in IDEA use ctrl+shift+alt+s to open project settings, then `modules -> sources` to add folders.
+
+# Troubleshooting
+## LSP
+- Verify Language server exists in `View -> Tool Windows -> Language Servers -> LSP Consoles -> RedscriptLanguageServer`
+- Open a .reds file
+- Verify RedscriptLanguageServer is in 'started' state
+- Check lsp logs in tool window, should contain 'redscript server initialized!'
+  ('redscript cache file not found at , the extension is configured incorrectly' means you didn't or incorrectly set the game install dir in settings)
+
+something is wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
+
+# Known Issues
+- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines
+- lsp GoToDefinition is patchy, as it is in vscode extension
