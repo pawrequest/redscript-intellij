@@ -20,4 +20,8 @@ GitHub downloder
 
 ## [0.0.4] - 2025-03-01
 ### Fixed
-Icons
+Icon
+
+## [0.0.5] - 2025-03-02
+### Fixed
+Icon swapped to redscript vs redscript-ide
