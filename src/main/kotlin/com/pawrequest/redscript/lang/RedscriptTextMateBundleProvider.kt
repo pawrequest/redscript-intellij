@@ -21,7 +21,8 @@ class RedscriptTextMateBundleProvider : TextMateBundleProvider {
             for (fileToCopy in listOf(
                 "package.json",
                 "language-configuration.json",
-                "syntaxes/redscript.tmLanguage.json"
+                "syntaxes/redscript.tmLanguage.json",
+                "images/icon_rs_16.png",
             )) {
                 val resource: URL? =
                     RedscriptTextMateBundleProvider::class.java.classLoader.getResource("textmate/$fileToCopy")
