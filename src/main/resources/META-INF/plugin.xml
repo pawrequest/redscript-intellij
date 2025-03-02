@@ -15,7 +15,7 @@
         <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
 
 <!--        textmate     -->
-        <textmate.bundleProvider implementation="com.pawrequest.redscript.lang.RedscriptTextMateBundleProvider" />
+        <textmate.bundleProvider implementation="com.pawrequest.redscript.server.RedscriptTextMateBundleProvider" />
         <fileType
                 name="Redscript"
                 language="Redscript"
