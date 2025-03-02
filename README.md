@@ -51,5 +51,5 @@ use `settings -> project -> project structure` to add workspace folders in pycha
 something is wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
 
 # Known Issues
-- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines
+- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime properties, see issue #10
 - lsp GoToDefinition is patchy, if you find a case where it doesn't work in intelliJ but does in vsCode please open an issue
