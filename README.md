@@ -28,17 +28,24 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 
 nb. i dont have a clue what i'm doing. use at your own risk.
 
-# Usage
-1. Update IDE to 2024.3.3 or later
-2. Get plugin zip - either:
-    - clone and build with intellij platform buildPlugin  
-      OR:
-    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)
+# Installation
+- Update IDE to 2024.3.3 or later
 
-3. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
-4. Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
-5. Any definitions you want to reference must exist in the editor. i.e. if you want to GoToDefinition on a function, that function must be in the editor.  
-use `settings -> project -> project structure` to add workspace folders in pycharm. in IDEA use ctrl+shift+alt+s to open project settings, then `modules -> sources` to add folders.
+- ## JetBrains Marketplace
+(tbc)
+
+- ## GitHub (latest)
+  1. Get plugin zip - either:
+    - clone and build with intellij platform buildPlugin for very latest  
+      OR:
+    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases) for latest release
+
+  2. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+
+# Usage
+- Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
+- Any definitions you want to reference must exist in the editor. i.e. if you want to GoToDefinition on a function, that function must be in the editor.  
+  use `settings -> project -> project structure` to add workspace folders in pycharm. in IDEA use ctrl+shift+alt+s to open project settings, then `modules -> sources` to add folders.
 
 # Troubleshooting
 ## LSP
