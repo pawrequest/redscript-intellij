@@ -29,18 +29,16 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 nb. i dont have a clue what i'm doing. use at your own risk.
 
 # Installation
-- Update IDE to 2024.3.3 or later
+Update IDE to 2024.3.3 or later
 
 - ## JetBrains Marketplace
-(tbc)
+  (tbc)
 
-- ## GitHub (latest)
-  1. Get plugin zip - either:
-    - clone and build with intellij platform buildPlugin for very latest  
-      OR:
-    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases) for latest release
-
-  2. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+- ## GitHub
+  - Get plugin zip - either:
+    - clone and build with intellij platform buildPlugin for very latest,  OR:  
+    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)   
+  - Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
 
 # Usage
 - Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
@@ -55,8 +53,8 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 - Check lsp logs in tool window, should contain 'redscript server initialized!'
   ('redscript cache file not found at , the extension is configured incorrectly' means you didn't or incorrectly set the game install dir in settings)
 
-something is wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
+if something is still wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
 
-# Known Issues
-- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime properties, see issue #10
+## Known Issues
+- syntax highlighting is patchy on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime properties, see [issue #10](https://github.com/pawrequest/redscript-intellij/issues/10)
 - lsp GoToDefinition is patchy, if you find a case where it doesn't work in intelliJ but does in vsCode please open an issue
