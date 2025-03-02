@@ -48,10 +48,10 @@
         ]]>
             </description>
         </server>
-        <languageMapping language="Redscript" serverId="redscript" />
-<!--        <fileNamePatternMapping patterns="*.reds"-->
-<!--                                serverId="redscript"-->
-<!--                                languageId="reds"/>-->
+<!--        <languageMapping language="Redscript" serverId="redscript" />-->
+        <fileNamePatternMapping patterns="*.reds"
+                                serverId="redscript"
+                                languageId="reds"/>
     </extensions>
 
     <applicationListeners>
