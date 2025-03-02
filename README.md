@@ -10,7 +10,7 @@ IntelliJ plugin for Redscript Modding. entirely dependent on:
 
 # Requires
 IntelliJ platform IDE  >= 2024.3.3 (eg IDEA, Pycharm)  
-[LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with redscript-intelliJ)
+[LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with this plugin)
 
 # ToDo
 
@@ -21,24 +21,31 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 - [x] proxy Language server via [LSP4IJ](https://github.com/redhat-developer/lsp4ij) and [redscript-ide](https://github.com/jac3km4/redscript-ide)
 - [x] GoToDefinition / click-thru
 - [x] Game Install dir configurable in UI
-- [x] Textmate Syntax Highlighting via [redscript syntx highlighting](https://github.com/jackhumbert/redscript-syntax-highlighting)
+- [x] Textmate Syntax Highlighting via [redscript syntax highlighting](https://github.com/jackhumbert/redscript-syntax-highlighting)
 - [ ] Debugging via [redscript DAP](https://github.com/jac3km4/redscript-dap)
 - [ ] Integrate  RedHotReload via [RedHotTools](https://github.com/psiberx/cp2077-red-hot-tools)
 
 
 nb. i dont have a clue what i'm doing. use at your own risk.
 
-# Usage
-1. Update IDE to 2024.3.3 or later
-2. Get plugin zip - either:
-    - clone and build with intellij platform buildPlugin  
-      OR:
-    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases)
+# Installation
+- Update IDE to 2024.3.3 or later
 
-3. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
-4. Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
-5. Any definitions you want to reference must exist in the editor. i.e. if you want to GoToDefinition on a function, that function must be in the editor.  
-use `settings -> project -> project structure` to add workspace folders in pycharm. in IDEA use ctrl+shift+alt+s to open project settings, then `modules -> sources` to add folders.
+- ## JetBrains Marketplace
+(tbc)
+
+- ## GitHub (latest)
+  1. Get plugin zip - either:
+    - clone and build with intellij platform buildPlugin for very latest  
+      OR:
+    - download prebuilt zip from [releases](https://github.com/pawrequest/redscript-intellij/releases) for latest release
+
+  2. Install redscript.x.x.x.zip in IntelliJ IDE >= 2024.3.3 via settings -> plugins -> cog icon -> install plugin from disk  
+
+# Usage
+- Set CyberPunk Install directory in Settings -> Tools -> Redscript (wait a moment for lsp server to restart)
+- Any definitions you want to reference must exist in the editor. i.e. if you want to GoToDefinition on a function, that function must be in the editor.  
+  use `settings -> project -> project structure` to add workspace folders in pycharm. in IDEA use ctrl+shift+alt+s to open project settings, then `modules -> sources` to add folders.
 
 # Troubleshooting
 ## LSP
@@ -51,5 +58,5 @@ use `settings -> project -> project structure` to add workspace folders in pycha
 something is wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
 
 # Known Issues
-- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines
-- lsp GoToDefinition is patchy, as it is in vscode extension
+- syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime properties, see issue #10
+- lsp GoToDefinition is patchy, if you find a case where it doesn't work in intelliJ but does in vsCode please open an issue
