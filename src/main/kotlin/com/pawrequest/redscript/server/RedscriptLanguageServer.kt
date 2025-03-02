@@ -5,9 +5,8 @@ import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
     init {
         try {
-            println("Fetching Redscript-IDE binary")
             val binaryFile: java.io.File = RedscriptIDEGitHubRepo.getRedscriptIDE()
-            println("binaryFile: $binaryFile")
+            println("Redscript binaryFile: $binaryFile")
             val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)
             super.setCommandLine(commandLine)
         } catch (e: java.io.IOException) {
