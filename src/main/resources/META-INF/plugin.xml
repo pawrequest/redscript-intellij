@@ -25,6 +25,7 @@
 
         />
 
+<!--        required to fix highlighting after defining custom filetype, but highlighting seems to work without, unless something is cached on my machine? -->
         <editorHighlighterProvider
                 filetype="Redscript"
                 implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />
