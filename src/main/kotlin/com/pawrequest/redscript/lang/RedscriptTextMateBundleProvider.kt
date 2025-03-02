@@ -1,4 +1,4 @@
-package com.pawrequest.redscript.server
+package com.pawrequest.redscript.lang
 
 import com.intellij.openapi.application.PathManager
 import org.jetbrains.plugins.textmate.api.TextMateBundleProvider
