@@ -52,4 +52,4 @@ something is wrong - please [create an issue](https://github.com/pawrequest/reds
 
 # Known Issues
 - syntax highlighting fails on some files, notably Codeware.Global which is > 40k lines
-- lsp GoToDefinition is patchy, as it is in vscode extension
+- lsp GoToDefinition is patchy, if you find a case where it doesn't work in intelliJ but does in vsCode please open an issue
