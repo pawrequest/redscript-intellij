@@ -14,7 +14,7 @@
         <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
         <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
 
-<!--        textmate     -->
+<!--        language     -->
         <textmate.bundleProvider implementation="com.pawrequest.redscript.lang.RedscriptTextMateBundleProvider" />
         <fileType
                 name="Redscript"
@@ -65,10 +65,15 @@
         ]]>
             </description>
         </server>
-<!--        <languageMapping language="Redscript" serverId="redscript" />-->
         <fileNamePatternMapping patterns="*.reds"
                                 serverId="redscript"
-                                languageId="reds"/>
+                                languageId="Redscript"/>
+
+<!--        <languageMapping language="Redscript" serverId="redscript" />-->
+<!--        <languageMapping language="Redscript"-->
+<!--                         serverId="redscript"-->
+<!--        />-->
+<!--                         languageId="reds"-->
     </extensions>
 
     <applicationListeners>
