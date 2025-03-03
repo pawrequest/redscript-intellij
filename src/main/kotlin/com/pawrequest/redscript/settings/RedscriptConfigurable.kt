@@ -39,8 +39,8 @@ class RedscriptConfigurable : Configurable {
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         if (project != null) {
             val languageServerManager = LanguageServerManager.getInstance(project)
-            languageServerManager.stop("redscript")
-            languageServerManager.start("redscript")
+            languageServerManager.stop("redscript.server")
+            languageServerManager.start("redscript.server")
         }
     }
 

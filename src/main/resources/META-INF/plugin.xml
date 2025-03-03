@@ -11,7 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
 <!--        settings        -->
-        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript" displayName="Redscript"/>
+        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript.config" displayName="Redscript"/>
         <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
 
 <!--        language     -->
@@ -22,29 +22,39 @@
                 implementationClass="com.pawrequest.redscript.lang.RedscriptFileType"
                 fieldName="INSTANCE"
                 extensions="reds"
-
         />
 
-<!--        required to fix textmate highlighting after defining custom filetype, but highlighting seems to work without, unless something is cached on my machine? -->
-        <editorHighlighterProvider
-                filetype="Redscript"
-                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />
-        <lang.syntaxHighlighterFactory
-                language="Redscript"
-                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateSyntaxHighlighterFactory" />
+<!--        "required" to fix textmate highlighting after defining custom filetype, but highlighting seems to work without and issue #10 unaffected? -->
+<!--        <editorHighlighterProvider-->
+<!--                filetype="Redscript"-->
+<!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />-->
+<!--        <lang.syntaxHighlighterFactory-->
+<!--                language="Redscript"-->
+<!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateSyntaxHighlighterFactory" />-->
 
 <!-- added as per clojure https://github.com/clojure-lsp/clojure-lsp-intellij/blob/321172035f922f7210e0eb2e2841eefdd3874310/src/main/resources/META-INF/plugin.xml#L59
         do nothing? or...? -->
+    <!--        folding builder doesnt magically make foldable? -->
         <lang.foldingBuilder language="Redscript"
                              implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
                              order="first"/>
         <codeInsight.parameterInfo
                 language="Redscript"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
+
+    <!--         PSI doesnt make tree loadable/viewable in psi pane -->
+<!--        <lang.psiStructureViewFactory-->
+<!--                id="LSPDocumentSymbolStructureViewFactoryForTextMate"-->
+<!--                language="textmate"-->
+<!--                implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>-->
         <lang.psiStructureViewFactory
+                id="LSPDocumentSymbolStructureViewFactoryForRedscript"
                 language="Redscript"
                 order="first"
                 implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>
+    <!--            -->
+
+    <!--        ? -->
         <callHierarchyProvider
                 language="Redscript"
                 implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />
@@ -57,7 +67,7 @@
 
 <!--    lsp     -->
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
-        <server id="redscript"
+        <server id="redscript.server"
                 name="RedscriptLanguageServer"
                 factoryClass="com.pawrequest.redscript.server.RedscriptLanguageServerFactory">
             <description><![CDATA[
@@ -65,17 +75,15 @@
         ]]>
             </description>
         </server>
+    <!-- why is this required? icon etc works as 'language' but lsp needs pattern match to fire... not so in reference plugins -->
         <fileNamePatternMapping patterns="*.reds"
-                                serverId="redscript"
+                                serverId="redscript.server"
                                 languageId="Redscript"/>
 
-<!--        <languageMapping language="Redscript" serverId="redscript" />-->
-<!--        <languageMapping language="Redscript"-->
-<!--                         serverId="redscript"-->
-<!--        />-->
-<!--                         languageId="reds"-->
+        <languageMapping language="Redscript"
+                         languageId="Redscript"
+                         serverId="redscript.server"
+        />
     </extensions>
 
-    <applicationListeners>
-    </applicationListeners>
 </idea-plugin>
