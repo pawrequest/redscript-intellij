@@ -75,7 +75,7 @@ jobs:
       - name: Build plugin
         env:
           GPR_USER: ${{ secrets.USERNAME_GITHUB }}  # Pass the username secret
-          GPR_KEY: ${{ secrets.PUBLISH_TOKEN }}     # Pass the token secret
+          GPR_KEY: ${{ secrets.PUBLISH_TOKEN_GITHUB }}     # Pass the token secret
         run: ./gradlew buildPlugin -Pgpr.user=$GPR_USER -Pgpr.key=$GPR_KEY
 #        run: ./gradlew buildPlugin
 
@@ -97,7 +97,7 @@ jobs:
           name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/content/*/*
 
-  # Run tests and upload a code coverage report
+#   Run tests and upload a code coverage report
   test:
     name: Test
     needs: [ build ]
@@ -113,7 +113,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
 
       # Setup Gradle
       - name: Setup Gradle
@@ -123,7 +123,7 @@ jobs:
       - name: Run Tests
         env:
           GPR_USER: ${{ secrets.USERNAME_GITHUB }}  # Pass the username secret
-          GPR_KEY: ${{ secrets.PUBLISH_TOKEN }}     # Pass the token secret
+          GPR_KEY: ${{ secrets.PUBLISH_TOKEN_GITHUB }}     # Pass the token secret
         run: ./gradlew check -Pgpr.user=$GPR_USER -Pgpr.key=$GPR_KEY
 
       # Collect Tests Result of failed tests
@@ -201,7 +201,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 21
 
       # Setup Gradle
       - name: Setup Gradle
@@ -264,4 +264,5 @@ jobs:
             --notes "$(cat << 'EOM'
           ${{ needs.build.outputs.changelog }}
           EOM
-          )"
+          )" \
+          --assets "./build/distributions/content/*"  # Attach the plugin artifact
