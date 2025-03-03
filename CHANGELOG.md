@@ -25,3 +25,12 @@ Icon
 ## [0.0.5] - 2025-03-02
 ### Fixed
 Icon swapped to redscript vs redscript-ide
+
+## [0.0.6] - 2025-03-02
+### Feature
+Publish to Jetbrains Marketplace
+
+## [0.0.7] - 2025-03-03
+### Feature
+Diagnostic underlining / Code-lens 
+Releases CI to Jetbrains marketplace
