@@ -32,7 +32,7 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 Update IDE to 2024.3.3 or later
 
 - ## JetBrains Marketplace
-  (tbc)
+  https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable
 
 - ## GitHub
   - Get plugin zip - either:
