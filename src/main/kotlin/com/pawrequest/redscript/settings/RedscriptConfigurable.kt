@@ -3,6 +3,7 @@ package com.pawrequest.redscript.settings
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.ProjectManager
 import com.redhat.devtools.lsp4ij.LanguageServerManager
+import com.redhat.devtools.lsp4ij.ServerStatus
 import javax.swing.JComponent
 
 class RedscriptConfigurable : Configurable {
@@ -38,9 +39,15 @@ class RedscriptConfigurable : Configurable {
         println("RESTARTING LANGUAGE SERVER\n")
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         if (project != null) {
-            val languageServerManager = LanguageServerManager.getInstance(project)
-            languageServerManager.stop("redscript.server")
-            languageServerManager.start("redscript.server")
+            val languageServerManager : LanguageServerManager = LanguageServerManager.getInstance(project)
+            val redServerStatus  = languageServerManager.getServerStatus("redscript.server")
+            println("Redscript Server Status = $redServerStatus")
+            if (redServerStatus == ServerStatus.started || redServerStatus == ServerStatus.starting) {
+                println("Stopping redscript.server")
+                languageServerManager.stop("redscript.server")
+                println("Starting redscript.server")
+                languageServerManager.start("redscript.server")
+            }
         }
     }
 
