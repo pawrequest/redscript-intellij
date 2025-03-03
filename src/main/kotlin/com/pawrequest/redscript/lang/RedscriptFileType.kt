@@ -1,11 +1,10 @@
 package com.pawrequest.redscript.lang
 
-
-import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.fileTypes.LanguageFileType
 import org.jetbrains.plugins.textmate.TextMateBackedFileType
 import javax.swing.Icon
 
-object RedscriptFileType : FileType, TextMateBackedFileType {
+object RedscriptFileType : LanguageFileType(RedscriptLanguage.INSTANCE), TextMateBackedFileType {
     val INSTANCE = RedscriptFileType
     override fun getName(): String = "Redscript"
 
@@ -14,7 +13,6 @@ object RedscriptFileType : FileType, TextMateBackedFileType {
     override fun getDefaultExtension(): String = "reds"
 
     override fun getIcon(): Icon = RedscriptIcons.REDSCRIPT_FILE
-    override fun isBinary(): Boolean = false
 }
 
 
