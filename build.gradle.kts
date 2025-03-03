@@ -1,10 +1,11 @@
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import java.net.URI
 
 
 plugins {
-    `maven-publish`
+//    `maven-publish`
     id("java") // Java support
     alias(libs.plugins.kotlin) // IntelliJ Platform Gradle Plugin
     alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
@@ -50,7 +51,7 @@ fun addRepoUri(repositoryHandler: RepositoryHandler, uri: URI) {
 
         credentials {
             username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME_GITHUB")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("PUBLISH_TOKEN")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("PUBLISH_TOKEN_GITHUB")
         }
     }
 }
@@ -124,14 +125,14 @@ dependencies {
 
 
 
-publishing {
-    repositories {
-        addRepoUri(this, githubPackageUri())
-    }
-    publications {
-        addPublication(this)
-    }
-}
+//publishing {
+//    repositories {
+//        addRepoUri(this, githubPackageUri())
+//    }
+//    publications {
+//        addPublication(this)
+//    }
+//}
 
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
@@ -153,11 +154,36 @@ intellijPlatform {
             }
         }
 
+        val changelog = project.changelog // local variable for configuration cache compatibility
+        // Get the latest available change notes from the changelog file
+        changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
+            with(changelog) {
+                renderItem(
+                    (getOrNull(pluginVersion) ?: getUnreleased())
+                        .withHeader(false)
+                        .withEmptySections(false),
+                    Changelog.OutputType.HTML,
+                )
+            }
+        }
 
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
             untilBuild = providers.gradleProperty("pluginUntilBuild")
         }
+    }
+//    signing {
+//        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+//        privateKey = providers.environmentVariable("PRIVATE_KEY")
+//        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+//    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN_JETBRAINS")
+        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
+        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
+        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
+        channels = providers.gradleProperty("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
 
     pluginVerification {
@@ -187,17 +213,4 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
-//    prepareSandbox {
-//        from("redscript-syntax-highlighting"){
-//            include("package.json")
-//            include("language-configuration.json")
-//            include("syntaxes/redscript.tmLanguage.json")
-//            include("images/**")
-//
-//
-//        into("${intellijPlatform.pluginConfiguration.name.get()}/textmate")
-//
-//        }
-//
-//    }
 }
