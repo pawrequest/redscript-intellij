@@ -18,12 +18,14 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 
 - [x] skeleton project - plugin builds and installs on IDEA Community
 - [x] Target multiple IDEs - working in Pycharm community, Pycharm Pro, IDEA Community
+- [x] Publish to Jetbrains Marketplace 
 - [x] proxy Language server via [LSP4IJ](https://github.com/redhat-developer/lsp4ij) and [redscript-ide](https://github.com/jac3km4/redscript-ide)
 - [x] GoToDefinition / click-thru
 - [x] Game Install dir configurable in UI
 - [x] Textmate Syntax Highlighting via [redscript syntax highlighting](https://github.com/jackhumbert/redscript-syntax-highlighting)
+      (partial support atm, specifically runtime hooks like `addmethod()` do not get highlighted properly. see [issue #10](https://github.com/pawrequest/redscript-intellij/issues/10)
 - [ ] Debugging via [redscript DAP](https://github.com/jac3km4/redscript-dap)
-- [ ] Integrate  RedHotReload via [RedHotTools](https://github.com/psiberx/cp2077-red-hot-tools)
+- [ ] RedHotReload via [RedHotTools](https://github.com/psiberx/cp2077-red-hot-tools)
 
 
 nb. i dont have a clue what i'm doing. use at your own risk.
@@ -32,7 +34,7 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 Update IDE to 2024.3.3 or later
 
 - ## JetBrains Marketplace
-  (tbc)
+  https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable
 
 - ## GitHub
   - Get plugin zip - either:
