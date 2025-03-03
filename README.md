@@ -36,6 +36,7 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 Update IDE to 2024.3.3 or later
 
 - ## JetBrains Marketplace
+  - Search 'redscript' in IDE plugins marketplace
   https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable
 
 - ## GitHub
@@ -60,5 +61,5 @@ Update IDE to 2024.3.3 or later
 if something is still wrong - please [create an issue](https://github.com/pawrequest/redscript-intellij/issues)
 
 ## Known Issues
-- syntax highlighting is patchy on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime properties, see [issue #10](https://github.com/pawrequest/redscript-intellij/issues/10)
+- syntax highlighting is patchy on some files, notably Codeware.Global which is > 40k lines, maybe related to `wrap | replace | ...` runtime hooks, see [issue #10](https://github.com/pawrequest/redscript-intellij/issues/10)
 - lsp GoToDefinition is patchy, if you find a case where it doesn't work in intelliJ but does in vsCode please open an issue
