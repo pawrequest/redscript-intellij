@@ -6,3 +6,4 @@ build
 /redscript-syntax-highlighting/
 /bench/
 /redscript-dap/
+/.keys/
