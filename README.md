@@ -1,4 +1,4 @@
-# Redscript-IntelliJ
+# Redscript-IntelliJ  
 
 <!-- Plugin description -->
 Work in progress   
@@ -26,8 +26,8 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 - [x] Game Install dir configurable in UI
 - [x] Textmate Syntax Highlighting via [redscript syntax highlighting](https://github.com/jackhumbert/redscript-syntax-highlighting)
       (partial support atm, runtime hooks like `addmethod()` do not get highlighted properly. see [issue #10](https://github.com/pawrequest/redscript-intellij/issues/10))
-- [ ] Debugging via [redscript DAP](https://github.com/jac3km4/redscript-dap)
-- [ ] RedHotReload via [RedHotTools](https://github.com/psiberx/cp2077-red-hot-tools)
+- [ ] Debugging via [redscript DAP](https://github.com/jac3km4/redscript-dap)  
+- [ ] RedHotReload via [RedHotTools](https://github.com/psiberx/cp2077-red-hot-tools)  
 
 
 nb. i dont have a clue what i'm doing. use at your own risk.
