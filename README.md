@@ -9,7 +9,7 @@ IntelliJ plugin for Redscript Modding. entirely dependent on:
 <!-- Plugin description end -->
 
 # Requires
-IntelliJ platform IDE  >= 2024.3.3 (eg IDEA, Pycharm)  
+IntelliJ platform IDE  >= 2024.3.3 (e.g. IDEA, Pycharm)  
 [LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with this plugin)
 
 # ToDo
