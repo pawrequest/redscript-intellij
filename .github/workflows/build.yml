@@ -265,4 +265,4 @@ jobs:
           ${{ needs.build.outputs.changelog }}
           EOM
           )" \
-          --assets "./build/distributions/content/*"  # Attach the plugin artifact
+#          --assets "./build/distributions/content/*"  # Attach the plugin artifact
