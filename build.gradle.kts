@@ -178,8 +178,12 @@ intellijPlatform {
 //        certificateChain = File(System.getenv("CERTIFICATE_CHAIN") ?: "./.keys/chain.crt").readText(Charsets.UTF_8)
 //        privateKey = File(System.getenv("PRIVATE_KEY") ?: "./.keys/private_64.pem").readText(Charsets.UTF_8)
         password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
-        privateKey = providers.environmentVariable("PRIVATE_KEY").orElse(File("./.keys/private_64.pem").readText(Charsets.UTF_8))
-        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN").orElse(File("./.keys/chain.crt").readText(Charsets.UTF_8))
+
+//        privateKey = providers.environmentVariable("PRIVATE_KEY").orElse(File("./.keys/private_64.pem").readText(Charsets.UTF_8))
+//        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN").orElse(File("./.keys/chain.crt").readText(Charsets.UTF_8))
+//
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
     }
 
     publishing {
