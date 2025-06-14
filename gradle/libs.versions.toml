@@ -12,6 +12,7 @@ qodana = "2024.3.4"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+lsp4ij = { module = "com.redhat.devtools:lsp4ij", version = "0.13.0" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

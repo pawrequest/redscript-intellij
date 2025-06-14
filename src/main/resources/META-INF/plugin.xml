@@ -8,7 +8,6 @@
     <depends>com.redhat.devtools.lsp4ij</depends>
     <depends>org.jetbrains.plugins.textmate</depends>
 
-
     <extensions defaultExtensionNs="com.intellij">
 <!--        settings        -->
         <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript.config" displayName="Redscript"/>
@@ -55,13 +54,13 @@
     <!--            -->
 
     <!--        ? -->
-        <callHierarchyProvider
-                language="Redscript"
-                implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />
-        <codeBlockProvider
-                language="Redscript"
-                implementationClass="com.redhat.devtools.lsp4ij.features.codeBlockProvider.LSPCodeBlockProvider"
-                order="first"/>
+<!--        <callHierarchyProvider-->
+<!--                language="Redscript"-->
+<!--                implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />-->
+<!--        <codeBlockProvider-->
+<!--                language="Redscript"-->
+<!--                implementationClass="com.redhat.devtools.lsp4ij.features.codeBlockProvider.LSPCodeBlockProvider"-->
+<!--                order="first"/>-->
 <!-- end of clojure code -->
     </extensions>
 
