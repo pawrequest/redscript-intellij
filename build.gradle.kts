@@ -14,6 +14,10 @@ plugins {
     alias(libs.plugins.kover) // Gradle Kover Plugin
 }
 
+group = providers.gradleProperty("pluginGroup").get()
+version = providers.gradleProperty("pluginVersion").get()
+
+
 // Set the JVM language level used to build the project.
 java {
     toolchain {
@@ -25,77 +29,10 @@ kotlin {
 }
 
 
-group = providers.gradleProperty("pluginGroup").get()
-version = providers.gradleProperty("pluginVersion").get()
-
-// BEGINS
-// pawrequest custom GitHub repo/dependency adder ASSUMES REPO_URL/.../VENDOR/ASSET
-val thisArtifactID = providers.gradleProperty("pluginRepositoryUrl").get().substringAfterLast("/")
-val thisVendorName =
-    providers.gradleProperty("pluginRepositoryUrl").get().substringBeforeLast("/").substringAfterLast("/")
-
-val theseCustomDependencies =
-    providers.gradleProperty("customDependencies").orNull // Returns null if the property is missing
-        ?.split(",") // Split only if the property is present
-        ?.filter { it.isNotBlank() } // Filter out empty strings
-        ?: emptyList() // Provide an empty list if the property is missing
-
-fun githubPackageUri(vendor: String = thisVendorName, artifactID: String = thisArtifactID): URI {
-    return URI.create("https://maven.pkg.github.com/$vendor/$artifactID")
-}
-
-fun addRepoUri(repositoryHandler: RepositoryHandler, uri: URI) {
-    repositoryHandler.maven {
-        url = uri
-        name = "GitHubPackages"
-
-        credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME_GITHUB")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("PUBLISH_TOKEN_GITHUB")
-        }
-    }
-}
-
-fun addCustomRepos(repositoryHandler: RepositoryHandler) {
-    for (dep in theseCustomDependencies) {
-        val depVals = dep.split(" ")
-        val asset = depVals[1]
-        val vendor = depVals[0]
-        val repoUri = githubPackageUri(vendor, asset)
-        println("Adding custom repo: $repoUri")
-        addRepoUri(repositoryHandler, repoUri)
-    }
-}
-
-
-fun addCustomDependencies(dependencyHandler: DependencyHandler) {
-    for (dep in theseCustomDependencies) {
-        val depVals = dep.split(" ")
-        val group = depVals[2]
-        val asset = depVals[1]
-        val version = depVals[3]
-        val dependency = "$group:$asset:$version"
-        println("Adding custom dependency: $dependency")
-        dependencyHandler.implementation(dependency)
-    }
-}
-
-
-fun addPublication(publicationContainer: PublicationContainer) {
-    publicationContainer.create<MavenPublication>("mavenJava") {
-        from(components["java"])
-        groupId = providers.gradleProperty("pluginGroup").get()
-        artifactId = thisArtifactID
-        version = providers.gradleProperty("pluginVersion").get()
-    }
-}
-// pawrequest custom github repo/dependency adder ASSUMES HTTPS://REPO_URL/.../VENDOR/ASSET
-// ENDS
 
 
 repositories {
     mavenCentral()
-//    addCustomRepos(this)
     maven("https://jitpack.io")
     intellijPlatform {
         defaultRepositories()
@@ -106,6 +43,7 @@ repositories {
 //// Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
     testImplementation(libs.junit)
+
     implementation("com.github.pawrequest:github:v0.0.1")
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
@@ -116,23 +54,13 @@ dependencies {
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
 
         // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file for plugin from JetBrains Marketplace.
-//        plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
-        plugins("com.redhat.devtools.lsp4ij:0.13.0")
-        pluginVerifier()
-        zipSigner()
+        plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
+//        plugins("com.redhat.devtools.lsp4ij:0.13.0")
+//        pluginVerifier()
+//        zipSigner()
         testFramework(TestFrameworkType.Platform)
     }
 }
-
-
-//publishing {
-//    repositories {
-//        addRepoUri(this, githubPackageUri())
-//    }
-//    publications {
-//        addPublication(this)
-//    }
-//}
 
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
@@ -159,9 +87,7 @@ intellijPlatform {
         changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
             with(changelog) {
                 renderItem(
-                    (getOrNull(pluginVersion) ?: getUnreleased())
-                        .withHeader(false)
-                        .withEmptySections(false),
+                    (getOrNull(pluginVersion) ?: getUnreleased()).withHeader(false).withEmptySections(false),
                     Changelog.OutputType.HTML,
                 )
             }
@@ -173,16 +99,9 @@ intellijPlatform {
         }
     }
     signing {
-//        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
-//        privateKey = providers.environmentVariable("PRIVATE_KEY")
-//        certificateChain = File(System.getenv("CERTIFICATE_CHAIN") ?: "./.keys/chain.crt").readText(Charsets.UTF_8)
-//        privateKey = File(System.getenv("PRIVATE_KEY") ?: "./.keys/private_64.pem").readText(Charsets.UTF_8)
-        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
-//        privateKey = providers.environmentVariable("PRIVATE_KEY").orElse(File("./.keys/private_64.pem").readText(Charsets.UTF_8))
-//        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN").orElse(File("./.keys/chain.crt").readText(Charsets.UTF_8))
-//
-        privateKey = providers.environmentVariable("PRIVATE_KEY")
         certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+        privateKey = providers.environmentVariable("PRIVATE_KEY")
+        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
     }
 
     publishing {
@@ -200,6 +119,24 @@ intellijPlatform {
         }
     }
 }
+// Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
+changelog {
+    groups.empty()
+    repositoryUrl = providers.gradleProperty("pluginRepositoryUrl")
+}
+
+
+// Configure Gradle Kover Plugin - read more: https://github.com/Kotlin/kotlinx-kover#configuration
+kover {
+    reports {
+        total {
+            xml {
+                onCheck = true
+            }
+        }
+    }
+}
+
 
 tasks {
     val copyVscodeTextMateBundle by registering(Copy::class) {
@@ -220,5 +157,27 @@ tasks {
     }
     publishPlugin {
         dependsOn(patchChangelog)
+    }
+}
+
+
+intellijPlatformTesting {
+    runIde {
+        register("runIdeForUiTests") {
+            task {
+                jvmArgumentProviders += CommandLineArgumentProvider {
+                    listOf(
+                        "-Drobot-server.port=8082",
+                        "-Dide.mac.message.dialogs.as.sheets=false",
+                        "-Djb.privacy.policy.text=<!--999.999-->",
+                        "-Djb.consents.confirmation.enabled=false",
+                    )
+                }
+            }
+
+            plugins {
+                robotServerPlugin()
+            }
+        }
     }
 }

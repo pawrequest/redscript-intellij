@@ -5,14 +5,14 @@ java = "21"
 
 # plugins
 changelog = "2.2.1"
-intelliJPlatform = "2.3.0"
+intelliJPlatform = "2.6.0"
 kotlin = "2.1.10"
 kover = "0.9.1"
 qodana = "2024.3.4"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-lsp4ij = { module = "com.redhat.devtools:lsp4ij", version = "0.13.0" }
+#lsp4ij = { module = "com.redhat.devtools:lsp4ij", version = "0.13.0" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
