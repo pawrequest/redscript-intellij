@@ -4,13 +4,13 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 
 plugins {
-//    `maven-publish`
-    id("java") // Java support
-    alias(libs.plugins.kotlin) // IntelliJ Platform Gradle Plugin
-    alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
-    alias(libs.plugins.changelog) // Gradle Changelog Plugin
-    alias(libs.plugins.qodana) // Gradle Qodana Plugin
-    alias(libs.plugins.kover) // Gradle Kover Plugin
+    id("java")
+//    id("org.jetbrains.intellij.platform") version "2.6.0"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.intelliJPlatform)
+    alias(libs.plugins.changelog)
+    alias(libs.plugins.qodana)
+    alias(libs.plugins.kover)
 }
 
 group = providers.gradleProperty("pluginGroup").get()

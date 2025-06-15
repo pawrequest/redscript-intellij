@@ -9,7 +9,7 @@ IntelliJ plugin for Redscript Modding. entirely dependent on:
 <!-- Plugin description end -->
 
 # Requires
-IntelliJ platform IDE  >= 2024.3.3 (e.g. IDEA, Pycharm)  
+IntelliJ platform IDE  >= 2025.1.1 (e.g. IDEA, Pycharm)  
 [LSP4IJ](https://github.com/redhat-developer/lsp4ij) intellij plugin from RedHat for LSP integration (auto installed with this plugin)
 
 # ToDo
@@ -35,9 +35,9 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 # Installation
 Update IDE to 2024.3.3 or later
 
-- ## JetBrains Marketplace
-  - Search 'redscript' in IDE plugins marketplace
-  https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable
+~~- ## JetBrains Marketplace~~ **broken!**  
+  ~~- Search 'redscript' in IDE plugins marketplace
+  https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable~~
 
 - ## GitHub
   - Get plugin zip - either:
