@@ -33,7 +33,7 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 nb. i dont have a clue what i'm doing. use at your own risk.
 
 # Installation
-Update IDE to 2024.3.3 or later
+Update IDE to 2025.1.1 or later
 
 ~~- ## JetBrains Marketplace~~ **broken!**  
   ~~- Search 'redscript' in IDE plugins marketplace
