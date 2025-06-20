@@ -3,6 +3,10 @@
 # See https://plugins.jetbrains.com/docs/intellij/plugin-signing.html for more information.
 
 name: Release
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   release:
     types: [prereleased, released]
