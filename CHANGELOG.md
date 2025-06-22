@@ -35,3 +35,6 @@
 ## 0.0.6 - 2025-03-02
 
 ## 0.0.7 - 2025-03-03
+
+## 0.0.11 - 2025-06-22
+Use edited languagejson to fix highlighting after 'new' keyword.
