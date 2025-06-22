@@ -138,27 +138,26 @@ kover {
 
 
 tasks {
-    val copyVscodeTextMateBundle by registering(Copy::class) {
-        from("./redscript-syntax-highlighting")
-        include("package.json")
-        include("language-configuration.json")
-        include("syntaxes/redscript.tmLanguage.json")
-        include("images/**")
-        into(layout.buildDirectory.dir("resources/main/textmate"))
-    }
-
-    processResources {
-        dependsOn(copyVscodeTextMateBundle)
-    }
-
-    wrapper {
-        gradleVersion = providers.gradleProperty("gradleVersion").get()
-    }
-    publishPlugin {
-        dependsOn(patchChangelog)
-    }
+//    val copyVscodeTextMateBundle by registering(Copy::class) {
+//        from("./redscript-syntax-highlighting")
+//        include("package.json")
+//        include("language-configuration.json")
+//        include("syntaxes/redscript.tmLanguage.json")
+//        include("images/**")
+//        into(layout.buildDirectory.dir("resources/main/textmate"))
+//    }
+//
+//    processResources {
+//        dependsOn(copyVscodeTextMateBundle)
+//    }
+//
+//    wrapper {
+//        gradleVersion = providers.gradleProperty("gradleVersion").get()
+//    }
+//    publishPlugin {
+//        dependsOn(patchChangelog)
+//    }
 }
-
 
 intellijPlatformTesting {
     runIde {
