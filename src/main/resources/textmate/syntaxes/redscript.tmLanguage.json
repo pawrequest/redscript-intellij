@@ -89,31 +89,19 @@
       ]
     },
     "global-cast-functions": {
+      "name": "meta.cast-function.redscript",
+      "begin": "\\bCast(<)((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))(>)(\\()",
+      "beginCaptures": {
+        "1": { "name": "support.function.redscript" },
+        "2": { "name": "entity.name.class.redscript" },
+        "4": { "name": "punctuation.definition.arguments.begin.redscript" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.arguments.end.redscript" }
+      },
       "patterns": [
-        {
-          "name": "support.function.redscript",
-          "begin": "\\bCast(\\<)",
-          "beginCaptures": {
-            "0": {
-              "name": "support.function.redscript"
-            },
-            "1": {
-              "name": "punctuation.definition.arguments.begin.redscript"
-            }
-          },
-          "end": "(?!\\G)\\>",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.arguments.end.redscript"
-            }
-          },
-          "patterns": [
-            {
-              "match": "((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))",
-              "name": "entity.name.class.redscript"
-            }
-          ]
-        }
+        { "include": "#expressions" }
       ]
     },
     "builtin-properties": {
