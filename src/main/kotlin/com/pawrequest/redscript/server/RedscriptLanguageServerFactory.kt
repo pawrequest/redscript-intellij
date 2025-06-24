@@ -5,6 +5,10 @@ import com.redhat.devtools.lsp4ij.LanguageServerFactory
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider
 
 class RedscriptLanguageServerFactory : LanguageServerFactory {
+    init {
+        maybeDownloadRedscriptIDE()
+    }
+
     override fun createConnectionProvider(project: Project): StreamConnectionProvider {
         return RedscriptLanguageServer()
     }

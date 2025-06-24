@@ -2,7 +2,7 @@
 # libraries
 junit = "4.13.2"
 java = "21"
-redscriptide = "v0.1.46"
+redscriptide = "v0.2.7"
 
 # plugins
 changelog = "2.2.1"

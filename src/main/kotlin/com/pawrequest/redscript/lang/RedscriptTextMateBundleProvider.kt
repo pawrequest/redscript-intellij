@@ -17,7 +17,6 @@ class RedscriptTextMateBundleProvider : TextMateBundleProvider {
         try {
             val redscriptBundleTmpDir: Path =
                 Files.createTempDirectory(Path.of(PathManager.getTempPath()), "textmate")
-//            todo add images here?
             for (fileToCopy in listOf(
                 "package.json",
                 "language-configuration.json",

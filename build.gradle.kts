@@ -1,12 +1,8 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import java.io.File
-import java.io.FileOutputStream
 import java.net.URI
 import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.Locale
 import java.util.zip.ZipInputStream
 
 
@@ -177,37 +173,6 @@ fun downloadAndExtractRepoZip(
     }
 }
 
-fun getPlatformBinaryName(): String {
-    val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
-    return when {
-        osName.contains("win") -> "redscript-ide.exe"
-        osName.contains("mac") -> "redscript-ide-x86_64-apple-darwin"
-        osName.contains("linux") -> "redscript-ide-x86_64-unknown-linux-gnu"
-        else -> throw UnsupportedOperationException("Unsupported platform: $osName")
-    }
-}
-
-
-fun downloadRedscriptIDE(): File {
-    val cacheDir: java.nio.file.Path = Paths.get(System.getProperty("user.home"), ".redscript-ide")
-    val version = libs.versions.redscriptide.get()
-    val binaryName = getPlatformBinaryName()
-    val url = "https://github.com/jac3km4/redscript-ide/releases/download/$version/$binaryName"
-
-    Files.createDirectories(cacheDir)
-    val targetFile = cacheDir.resolve(binaryName).toFile()
-    if (!targetFile.exists()) {
-        URI(url).toURL().openStream().use { input ->
-            FileOutputStream(targetFile).use { output ->
-                input.copyTo(output)
-            }
-        }
-        targetFile.setExecutable(true)
-    }
-    return targetFile
-}
-
-
 tasks {
     val dlTextMateBundle by registering(Copy::class) {
         downloadAndExtractRepoZip(
@@ -220,20 +185,14 @@ tasks {
         )
     }
 
-    val dlRedscriptBinary by registering(Copy::class) {
-        downloadRedscriptIDE()
-    }
-
     processResources {
-        dependsOn(dlTextMateBundle, dlRedscriptBinary)
+        dependsOn(dlTextMateBundle, "generateRedscriptIdeVersion")
     }
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
 
 }
-//
-//
 
 intellijPlatformTesting {
     runIde {
@@ -253,5 +212,20 @@ intellijPlatformTesting {
                 robotServerPlugin()
             }
         }
+    }
+}
+
+tasks.register("generateRedscriptIdeVersion") {
+    val outputDir = layout.buildDirectory.dir("generated/resources")
+    outputs.dir(outputDir)
+    doLast {
+        val file = outputDir.get().file("redscript-ide-version.txt").asFile
+        file.parentFile.mkdirs()
+        file.writeText(libs.versions.redscriptide.get())
+    }
+}
+sourceSets {
+    main {
+        resources.srcDir(layout.buildDirectory.dir("generated/resources"))
     }
 }
