@@ -2,6 +2,7 @@
 # libraries
 junit = "4.13.2"
 java = "21"
+redscriptide = "v0.1.46"
 
 # plugins
 changelog = "2.2.1"
@@ -9,6 +10,7 @@ intelliJPlatform = "2.6.0"
 kotlin = "2.1.21"
 kover = "0.9.1"
 qodana = "2025.1.1"
+
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }

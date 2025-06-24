@@ -7,3 +7,4 @@ build
 /bench/
 /redscript-dap/
 /.keys/
+/src/main/resources/textmate/

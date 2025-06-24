@@ -1,6 +1,13 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URI
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.Locale
+import java.util.zip.ZipInputStream
 
 
 plugins {
@@ -136,28 +143,97 @@ kover {
     }
 }
 
+fun downloadAndExtractRepoZip(
+    repoZipUrl: String, targetDir: File, allowedPaths: Set<String>? = null, allowedPrefixes: List<String>? = null
+) {
+    println("Downloading and extracting repository ZIP from: $repoZipUrl to $targetDir")
+    targetDir.deleteRecursively()
+    targetDir.mkdirs()
+    val zipStream = URI(repoZipUrl).toURL().openStream()
+    ZipInputStream(zipStream).use { zip ->
+        var entry = zip.nextEntry
+        while (entry != null) {
+            val name = entry.name.substringAfter('/')
+            val isAllowed = when {
+                allowedPaths == null && allowedPrefixes == null -> name.isNotEmpty()
+                else -> name.isNotEmpty() && (allowedPaths?.contains(name) == true || allowedPrefixes?.any {
+                    name.startsWith(
+                        it
+                    )
+                } == true)
+            }
+            if (isAllowed) {
+                val outFile = File(targetDir, name)
+                if (entry.isDirectory) {
+                    outFile.mkdirs()
+                } else {
+                    outFile.parentFile.mkdirs()
+                    Files.copy(zip, outFile.toPath())
+                }
+            }
+            zip.closeEntry()
+            entry = zip.nextEntry
+        }
+    }
+}
+
+fun getPlatformBinaryName(): String {
+    val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
+    return when {
+        osName.contains("win") -> "redscript-ide.exe"
+        osName.contains("mac") -> "redscript-ide-x86_64-apple-darwin"
+        osName.contains("linux") -> "redscript-ide-x86_64-unknown-linux-gnu"
+        else -> throw UnsupportedOperationException("Unsupported platform: $osName")
+    }
+}
+
+
+fun downloadRedscriptIDE(): File {
+    val cacheDir: java.nio.file.Path = Paths.get(System.getProperty("user.home"), ".redscript-ide")
+    val version = libs.versions.redscriptide.get()
+    val binaryName = getPlatformBinaryName()
+    val url = "https://github.com/jac3km4/redscript-ide/releases/download/$version/$binaryName"
+
+    Files.createDirectories(cacheDir)
+    val targetFile = cacheDir.resolve(binaryName).toFile()
+    if (!targetFile.exists()) {
+        URI(url).toURL().openStream().use { input ->
+            FileOutputStream(targetFile).use { output ->
+                input.copyTo(output)
+            }
+        }
+        targetFile.setExecutable(true)
+    }
+    return targetFile
+}
+
 
 tasks {
-//    val copyVscodeTextMateBundle by registering(Copy::class) {
-//        from("./redscript-syntax-highlighting")
-//        include("package.json")
-//        include("language-configuration.json")
-//        include("syntaxes/redscript.tmLanguage.json")
-//        include("images/**")
-//        into(layout.buildDirectory.dir("resources/main/textmate"))
-//    }
-//
-//    processResources {
-//        dependsOn(copyVscodeTextMateBundle)
-//    }
-//
-//    wrapper {
-//        gradleVersion = providers.gradleProperty("gradleVersion").get()
-//    }
-//    publishPlugin {
-//        dependsOn(patchChangelog)
-//    }
+    val dlTextMateBundle by registering(Copy::class) {
+        downloadAndExtractRepoZip(
+            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/master.zip",
+            file("src/main/resources/textmate"),
+            allowedPaths = setOf(
+                "package.json", "language-configuration.json", "syntaxes/redscript.tmLanguage.json"
+            ),
+            allowedPrefixes = listOf("images/")
+        )
+    }
+
+    val dlRedscriptBinary by registering(Copy::class) {
+        downloadRedscriptIDE()
+    }
+
+    processResources {
+        dependsOn(dlTextMateBundle, dlRedscriptBinary)
+    }
+    wrapper {
+        gradleVersion = providers.gradleProperty("gradleVersion").get()
+    }
+
 }
+//
+//
 
 intellijPlatformTesting {
     runIde {
