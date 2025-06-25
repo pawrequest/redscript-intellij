@@ -9,12 +9,17 @@
     <depends>org.jetbrains.plugins.textmate</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-<!--        settings        -->
-        <applicationConfigurable parentId="tools" instance="com.pawrequest.redscript.settings.RedscriptConfigurable" id="redscript.config" displayName="Redscript"/>
+        <!--        settings        -->
+        <applicationConfigurable parentId="tools"
+                                 instance="com.pawrequest.redscript.settings.RedscriptConfigurable"
+                                 id="redscript.config"
+                                 displayName="Redscript"
+        />
+
         <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
 
-<!--        language     -->
-        <textmate.bundleProvider implementation="com.pawrequest.redscript.lang.RedscriptTextMateBundleProvider" />
+        <!--        language     -->
+        <textmate.bundleProvider implementation="com.pawrequest.redscript.lang.RedscriptTextMateBundleProvider"/>
         <fileType
                 name="Redscript"
                 language="Redscript"

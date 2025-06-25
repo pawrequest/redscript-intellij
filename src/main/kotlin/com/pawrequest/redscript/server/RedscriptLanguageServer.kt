@@ -44,7 +44,7 @@ fun withLanguageServerRestart(action: () -> Unit = {}) {
                     stopped = true
                     break
                 }
-                Thread.sleep(200)
+                Thread.sleep(100)
             }
             if (!stopped) {
                 println("Failure: Server did not stop in time")

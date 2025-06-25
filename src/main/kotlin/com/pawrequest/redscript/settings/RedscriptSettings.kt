@@ -1,5 +1,4 @@
 package com.pawrequest.redscript.settings
-import com.pawrequest.redscript.server.downloadRedscriptIdeFromGithub
 
 
 import com.intellij.openapi.application.ApplicationManager

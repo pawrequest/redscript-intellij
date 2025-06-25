@@ -14,7 +14,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
-import kotlin.text.get
 
 data class RedscriptIdeRelease(val tagName: String, val downloadUrl: String)
 
@@ -140,7 +139,7 @@ fun getReleaseInfo(version: String): RedscriptIdeRelease {
 // do it
 fun downloadRedscriptIdeFromGithub(): Pair<File, String> {
     val installedVersion = getInstalledIDEVersion()
-    var tags: List<String> = emptyList()
+    var tags: List<String>
 
     try {
         tags = getAllReleaseTags()
@@ -189,7 +188,7 @@ fun downloadRedscriptIdeFromGithub(): Pair<File, String> {
 fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
     println("Downloading Redscript IDE '${getPlatformBinaryName()}' from: ${release.downloadUrl} to ${binaryFile.absolutePath}")
     val url = URI(release.downloadUrl).toURL()
-    var conn = url.openConnection() as HttpsURLConnection
+    val conn = url.openConnection() as HttpsURLConnection
     setGithubHeaders(conn)
 
     conn.inputStream.use { input ->
