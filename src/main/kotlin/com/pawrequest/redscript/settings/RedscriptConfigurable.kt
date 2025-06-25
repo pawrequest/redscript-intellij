@@ -37,9 +37,7 @@ class RedscriptConfigurable : Configurable {
 
         val oldIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
         val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersion
-        if (newIDEVersion != null) {
-            RedscriptSettings.getInstance().redscriptIDEVersion = newIDEVersion
-        }
+        RedscriptSettings.getInstance().redscriptIDEVersion = newIDEVersion
         if (newIDEVersion != oldIDEVersion) {
             restartLanguageServer()
         }
