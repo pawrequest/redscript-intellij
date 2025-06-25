@@ -5,11 +5,8 @@ import com.redhat.devtools.lsp4ij.LanguageServerFactory
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider
 
 class RedscriptLanguageServerFactory : LanguageServerFactory {
-    init {
-        downloadRedscriptIdeFromGithub()
-    }
-
     override fun createConnectionProvider(project: Project): StreamConnectionProvider {
+        downloadRedscriptIdeFromGithub()
         return RedscriptLanguageServer()
     }
 }

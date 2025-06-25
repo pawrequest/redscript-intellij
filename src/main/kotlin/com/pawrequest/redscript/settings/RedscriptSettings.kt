@@ -1,4 +1,5 @@
 package com.pawrequest.redscript.settings
+import com.pawrequest.redscript.server.downloadRedscriptIdeFromGithub
 
 
 import com.intellij.openapi.application.ApplicationManager
@@ -40,6 +41,7 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
         get() = myState.redscriptIDEVersion
         set(version) {
             myState.redscriptIDEVersion = version
+
         }
 
     companion object {

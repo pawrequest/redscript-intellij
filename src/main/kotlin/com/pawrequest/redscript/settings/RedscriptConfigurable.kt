@@ -2,6 +2,7 @@ package com.pawrequest.redscript.settings
 
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.ProjectManager
+import com.pawrequest.redscript.server.downloadRedscriptIdeFromGithub
 import com.redhat.devtools.lsp4ij.LanguageServerManager
 import com.redhat.devtools.lsp4ij.ServerStatus
 import javax.swing.JComponent
@@ -39,21 +40,22 @@ class RedscriptConfigurable : Configurable {
         val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersion
         RedscriptSettings.getInstance().redscriptIDEVersion = newIDEVersion
         if (newIDEVersion != oldIDEVersion) {
-            restartLanguageServer()
+            println("Redscript IDE version set to: $newIDEVersion - redownloading binary")
+            downloadRedscriptIdeFromGithub()
         }
     }
 
     private fun restartLanguageServer() {
-        println("RESTARTING LANGUAGE SERVER\n")
+        println("RESTARTING LANGUAGE SERVER in restartLanguageServer()")
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         if (project != null) {
             val languageServerManager : LanguageServerManager = LanguageServerManager.getInstance(project)
             val redServerStatus  = languageServerManager.getServerStatus("redscript.server")
             println("Redscript Server Status = $redServerStatus")
             if (redServerStatus == ServerStatus.started || redServerStatus == ServerStatus.starting) {
-                println("Stopping redscript.server")
+                println("Stopping redscript.server in restartLanguageServer()")
                 languageServerManager.stop("redscript.server")
-                println("Starting redscript.server")
+                println("Starting redscript.server in restartLanguageServer()")
                 languageServerManager.start("redscript.server")
             }
         }
