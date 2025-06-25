@@ -23,17 +23,17 @@
                 extensions="reds"
         />
 
-<!--        "required" to fix textmate highlighting after defining custom filetype, but highlighting seems to work without and issue #10 unaffected? -->
-<!--        <editorHighlighterProvider-->
-<!--                filetype="Redscript"-->
-<!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />-->
-<!--        <lang.syntaxHighlighterFactory-->
-<!--                language="Redscript"-->
-<!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateSyntaxHighlighterFactory" />-->
+        <!--        "required" to fix textmate highlighting after defining custom filetype, but highlighting seems to work without and issue #10 unaffected? -->
+        <!--        <editorHighlighterProvider-->
+        <!--                filetype="Redscript"-->
+        <!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider" />-->
+        <!--        <lang.syntaxHighlighterFactory-->
+        <!--                language="Redscript"-->
+        <!--                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateSyntaxHighlighterFactory" />-->
 
-<!-- added as per clojure https://github.com/clojure-lsp/clojure-lsp-intellij/blob/321172035f922f7210e0eb2e2841eefdd3874310/src/main/resources/META-INF/plugin.xml#L59
-        do nothing? or...? -->
-    <!--        folding builder doesnt magically make foldable? -->
+        <!-- added as per clojure https://github.com/clojure-lsp/clojure-lsp-intellij/blob/321172035f922f7210e0eb2e2841eefdd3874310/src/main/resources/META-INF/plugin.xml#L59
+                do nothing? or...? -->
+        <!--        folding builder doesnt magically make foldable? -->
         <lang.foldingBuilder language="Redscript"
                              implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
                              order="first"/>
@@ -41,30 +41,30 @@
                 language="Redscript"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
 
-    <!--         PSI doesnt make tree loadable/viewable in psi pane -->
-<!--        <lang.psiStructureViewFactory-->
-<!--                id="LSPDocumentSymbolStructureViewFactoryForTextMate"-->
-<!--                language="textmate"-->
-<!--                implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>-->
+        <!--         PSI doesnt make tree loadable/viewable in psi pane -->
+        <!--        <lang.psiStructureViewFactory-->
+        <!--                id="LSPDocumentSymbolStructureViewFactoryForTextMate"-->
+        <!--                language="textmate"-->
+        <!--                implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>-->
         <lang.psiStructureViewFactory
                 id="LSPDocumentSymbolStructureViewFactoryForRedscript"
                 language="Redscript"
                 order="first"
                 implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>
-    <!--            -->
+        <!--            -->
 
-    <!--        ? -->
-<!--        <callHierarchyProvider-->
-<!--                language="Redscript"-->
-<!--                implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />-->
-<!--        <codeBlockProvider-->
-<!--                language="Redscript"-->
-<!--                implementationClass="com.redhat.devtools.lsp4ij.features.codeBlockProvider.LSPCodeBlockProvider"-->
-<!--                order="first"/>-->
-<!-- end of clojure code -->
+        <!--        ? -->
+        <!--        <callHierarchyProvider-->
+        <!--                language="Redscript"-->
+        <!--                implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />-->
+        <!--        <codeBlockProvider-->
+        <!--                language="Redscript"-->
+        <!--                implementationClass="com.redhat.devtools.lsp4ij.features.codeBlockProvider.LSPCodeBlockProvider"-->
+        <!--                order="first"/>-->
+        <!-- end of clojure code -->
     </extensions>
 
-<!--    lsp     -->
+    <!--    lsp     -->
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
         <server id="redscript.server"
                 name="RedscriptLanguageServer"
@@ -74,7 +74,7 @@
         ]]>
             </description>
         </server>
-    <!-- why is this required? icon etc works as 'language' but lsp needs pattern match to fire... not so in reference plugins -->
+        <!-- why is this required? icon etc works as 'language' but lsp needs pattern match to fire... not so in reference plugins -->
         <fileNamePatternMapping patterns="*.reds"
                                 serverId="redscript.server"
                                 languageId="Redscript"/>
