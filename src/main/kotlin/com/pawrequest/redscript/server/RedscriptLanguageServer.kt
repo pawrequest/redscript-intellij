@@ -5,10 +5,7 @@ import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider
 
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
     init {
-        val binaryFile = redscriptIdeLocalPath().toFile()
-        if (!binaryFile.exists()) {
-            throw IllegalStateException("Redscript IDE binary not found at ${binaryFile.absolutePath}")
-        }
+        val binaryFile = getRedscriptIDEBinaryPath().toFile()
         val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)
         super.setCommandLine(commandLine)
 

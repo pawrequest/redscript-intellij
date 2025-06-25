@@ -6,7 +6,7 @@ import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider
 
 class RedscriptLanguageServerFactory : LanguageServerFactory {
     init {
-        maybeDownloadRedscriptIDE()
+        downloadRedscriptIdeFromGithub()
     }
 
     override fun createConnectionProvider(project: Project): StreamConnectionProvider {
