@@ -2,7 +2,9 @@
 # libraries
 junit = "4.13.2"
 java = "21"
-redscriptide = "v0.2.7"
+redscriptide = "v0.1.46"
+org-json = "20250517"
+
 
 # plugins
 changelog = "2.2.1"
@@ -15,6 +17,7 @@ qodana = "2025.1.1"
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 #lsp4ij = { module = "com.redhat.devtools:lsp4ij", version = "0.13.0" }
+org-json = { module = "org.json:json", version.ref = "org-json" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
