@@ -1,17 +1,25 @@
 package com.pawrequest.redscript.settings
 
 
+import com.intellij.ide.script.IDE
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.application.ApplicationManager
+enum class IDEVersion(val value: Int) {
+    V1(1),
+    V2(2);
 
+    override fun toString(): String = "IDE Version $value"
+
+}
 @State(name = "RedscriptSettings", storages = [Storage("redscript.xml")])
 class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
     private var myState = State()
 
     class State {
         var gameDir: String = ""
+        var redscriptIDEVersion: IDEVersion = IDEVersion.V1
     }
 
     override fun getState(): State {
@@ -26,6 +34,12 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
         get() = myState.gameDir
         set(gameDir) {
             myState.gameDir = gameDir
+        }
+
+    var redscriptIDEVersion: IDEVersion
+        get() = myState.redscriptIDEVersion
+        set(version) {
+            myState.redscriptIDEVersion = version
         }
 
     companion object {

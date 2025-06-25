@@ -19,7 +19,8 @@ class RedscriptConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        return redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir
+        return redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir ||
+               redscriptSettingsComponent!!.redscriptIDEVersion != RedscriptSettings.getInstance().redscriptIDEVersion
     }
 
 
@@ -31,6 +32,15 @@ class RedscriptConfigurable : Configurable {
         }
 
         if (newGameDir != oldGameDir) {
+            restartLanguageServer()
+        }
+
+        val oldIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
+        val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersion
+        if (newIDEVersion != null) {
+            RedscriptSettings.getInstance().redscriptIDEVersion = newIDEVersion
+        }
+        if (newIDEVersion != oldIDEVersion) {
             restartLanguageServer()
         }
     }
@@ -53,6 +63,7 @@ class RedscriptConfigurable : Configurable {
 
     override fun reset() {
         redscriptSettingsComponent!!.gameDir = RedscriptSettings.getInstance().gameDir
+        redscriptSettingsComponent!!.redscriptIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
     }
 
     override fun disposeUIResources() {
