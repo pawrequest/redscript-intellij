@@ -7,6 +7,7 @@ import com.redhat.devtools.lsp4ij.ServerStatus
 import javax.swing.JComponent
 
 class RedscriptConfigurable(private val project: Project) : Configurable {
+
     private var redscriptSettingsComponent: RedscriptSettingsComponent? = null
 
     override fun getDisplayName(): String = "Redscript"
@@ -32,7 +33,6 @@ class RedscriptConfigurable(private val project: Project) : Configurable {
     }
 
     private fun restartLanguageServer() {
-        // Use 'project' instead of ProjectManager
         val languageServerManager = LanguageServerManager.getInstance(project)
         val redServerStatus = languageServerManager.getServerStatus("redscript.server")
         if (redServerStatus == ServerStatus.started || redServerStatus == ServerStatus.starting) {
