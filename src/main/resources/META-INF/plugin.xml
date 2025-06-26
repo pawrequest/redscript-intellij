@@ -10,11 +10,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!--        settings        -->
-        <applicationConfigurable parentId="tools"
-                                 instance="com.pawrequest.redscript.settings.RedscriptConfigurable"
-                                 id="redscript.config"
-                                 displayName="Redscript"
+        <projectConfigurable parentId="tools"
+                instance="com.pawrequest.redscript.settings.RedscriptConfigurable"
+                id="redscript.config"
+                displayName="Redscript"
         />
+
 
         <applicationService serviceImplementation="com.pawrequest.redscript.settings.RedscriptSettings"/>
 

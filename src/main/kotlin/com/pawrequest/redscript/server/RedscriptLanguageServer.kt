@@ -9,6 +9,9 @@ import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
     init {
         val binaryFile = getRedscriptIDEBinaryPath().toFile()
+        if (!binaryFile.exists()) {
+            throw IllegalStateException("Redscript IDE binary not found at ${binaryFile.absolutePath}. Please install the Redscript IDE plugin.")
+        }
         val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)
         super.setCommandLine(commandLine)
 
@@ -33,7 +36,10 @@ fun withLanguageServerRestart(action: () -> Unit = {}) {
             println("Stopping redscript.server in withLanguageServerRestart()")
             languageServerManager.stop("redscript.server")
             var stopped = false
-            for (i in 1..100) {
+            repeat(100) label@{
+//            for (_ in 1..100) {
+
+
                 println("Waiting for redscript.server to stop...")
                 if (languageServerManager.getServerStatus("redscript.server") in setOf(
                         ServerStatus.none,
@@ -42,40 +48,20 @@ fun withLanguageServerRestart(action: () -> Unit = {}) {
                 ) {
                     println("Success: Server Stopped or none")
                     stopped = true
-                    break
+//                    break
+                    return@label
                 }
                 Thread.sleep(100)
             }
             if (!stopped) {
                 println("Failure: Server did not stop in time")
             }
-//            Thread.sleep(2000)
-//            val deleted = binaryFile.delete()
-//            if (deleted) {
-//                println("Redscript binary ${binaryFile} deleted successfully")
-//            } else {
-//                println("Failed to delete redscript binary ${binaryFile}")
-//            }
-//            var unlocked = false
-
-
-//            for (i in 1..100) {
-//                println("Waiting for redscript IDE binary file to be unlocked...")
-//                try {
-//                    FileOutputStream(binaryFile, true).close()
-//                    println("Success: file is not locked")
-//                    unlocked = true
-//                    break
-//                } catch (e: Exception) {
-//                    Thread.sleep(200)
-//                }
-//            }
-//            if (!unlocked) {
-//                println("Failure: file not unlocked in time")
-//            }
 
             try {
                 action()
+            } catch (e: Exception) {
+                println("Error during server restart action execution: ${e.message}")
+                e.printStackTrace()
             } finally {
                 println("Starting redscript.server")
                 languageServerManager.start("redscript.server")

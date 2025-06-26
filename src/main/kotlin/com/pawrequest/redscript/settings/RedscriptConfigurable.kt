@@ -1,18 +1,15 @@
 package com.pawrequest.redscript.settings
 
 import com.intellij.openapi.options.Configurable
-import com.intellij.openapi.project.ProjectManager
-import com.pawrequest.redscript.server.downloadRedscriptIdeFromGithub
+import com.intellij.openapi.project.Project
 import com.redhat.devtools.lsp4ij.LanguageServerManager
 import com.redhat.devtools.lsp4ij.ServerStatus
 import javax.swing.JComponent
 
-class RedscriptConfigurable : Configurable {
+class RedscriptConfigurable(private val project: Project) : Configurable {
     private var redscriptSettingsComponent: RedscriptSettingsComponent? = null
 
-    override fun getDisplayName(): String {
-        return "Redscript"
-    }
+    override fun getDisplayName(): String = "Redscript"
 
     override fun createComponent(): JComponent {
         redscriptSettingsComponent = RedscriptSettingsComponent()
@@ -20,10 +17,8 @@ class RedscriptConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        return redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir ||
-               redscriptSettingsComponent!!.redscriptIDEVersion != RedscriptSettings.getInstance().redscriptIDEVersion
+        return redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir
     }
-
 
     override fun apply() {
         val oldGameDir = RedscriptSettings.getInstance().gameDir
@@ -31,39 +26,23 @@ class RedscriptConfigurable : Configurable {
         if (newGameDir != null) {
             RedscriptSettings.getInstance().gameDir = newGameDir
         }
-
         if (newGameDir != oldGameDir) {
             restartLanguageServer()
-        }
-
-        val oldIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
-        val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersion
-        RedscriptSettings.getInstance().redscriptIDEVersion = newIDEVersion
-        if (newIDEVersion != oldIDEVersion) {
-            println("Redscript IDE version set to: $newIDEVersion - redownloading binary")
-            downloadRedscriptIdeFromGithub()
         }
     }
 
     private fun restartLanguageServer() {
-        println("RESTARTING LANGUAGE SERVER in restartLanguageServer()")
-        val project = ProjectManager.getInstance().openProjects.firstOrNull()
-        if (project != null) {
-            val languageServerManager : LanguageServerManager = LanguageServerManager.getInstance(project)
-            val redServerStatus  = languageServerManager.getServerStatus("redscript.server")
-            println("Redscript Server Status = $redServerStatus")
-            if (redServerStatus == ServerStatus.started || redServerStatus == ServerStatus.starting) {
-                println("Stopping redscript.server in restartLanguageServer()")
-                languageServerManager.stop("redscript.server")
-                println("Starting redscript.server in restartLanguageServer()")
-                languageServerManager.start("redscript.server")
-            }
+        // Use 'project' instead of ProjectManager
+        val languageServerManager = LanguageServerManager.getInstance(project)
+        val redServerStatus = languageServerManager.getServerStatus("redscript.server")
+        if (redServerStatus == ServerStatus.started || redServerStatus == ServerStatus.starting) {
+            languageServerManager.stop("redscript.server")
+            languageServerManager.start("redscript.server")
         }
     }
 
     override fun reset() {
         redscriptSettingsComponent!!.gameDir = RedscriptSettings.getInstance().gameDir
-        redscriptSettingsComponent!!.redscriptIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
     }
 
     override fun disposeUIResources() {
