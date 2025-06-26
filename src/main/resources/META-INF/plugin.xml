@@ -11,9 +11,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <!--        settings        -->
         <projectConfigurable parentId="tools"
-                instance="com.pawrequest.redscript.settings.RedscriptConfigurable"
-                id="redscript.config"
-                displayName="Redscript"
+                             id="redscript.config"
+                             displayName="Redscript"
+                             nonDefaultProject="true"
+                             instance="com.pawrequest.redscript.settings.RedscriptConfigurable"
         />
 
 
