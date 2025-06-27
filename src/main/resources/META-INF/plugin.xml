@@ -9,6 +9,12 @@
     <depends>org.jetbrains.plugins.textmate</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.pawrequest.redscript.server.RedscriptInitializer"/>
+        <notificationGroup
+                id="Redscript Notifications"
+                displayType="BALLOON"
+        />
+<!--                canHandleContent="true"-->
         <!--        settings        -->
         <projectConfigurable parentId="tools"
                              id="redscript.config"
@@ -91,5 +97,10 @@
                          serverId="redscript.server"
         />
     </extensions>
+
+<!--    <applicationListeners>-->
+<!--        <listener class="com.pawrequest.redscript.settings.RedscriptProjectManagerListener"-->
+<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+<!--    </applicationListeners>-->
 
 </idea-plugin>

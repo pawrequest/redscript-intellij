@@ -11,7 +11,9 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
     private var myState = State()
 
     class State {
-        var gameDir: String = ""
+        var gameDir: String = System.getenv("REDCLI_GAME") ?: ""
+        var redscriptIDEPath: String = ""
+        var redscriptIDEVersion: String = ""
     }
 
     override fun getState(): State {
@@ -28,6 +30,18 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             myState.gameDir = gameDir
         }
 
+    var redscriptIDEPath: String
+        get() = myState.redscriptIDEPath
+        set(redscriptIDEPath) {
+            myState.redscriptIDEPath = redscriptIDEPath
+        }
+
+    var redscriptIDEVersion: String
+        get() = myState.redscriptIDEVersion
+        set(redscriptIDEVersion) {
+            myState.redscriptIDEVersion = redscriptIDEVersion
+        }
+
 
     companion object {
         fun getInstance(): RedscriptSettings {
@@ -35,8 +49,6 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
         }
     }
 }
-
-
 
 
 //import com.intellij.openapi.components.PersistentStateComponent
