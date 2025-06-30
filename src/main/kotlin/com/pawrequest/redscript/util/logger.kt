@@ -1,34 +1,45 @@
 package com.pawrequest.redscript.util
 
-import java.util.logging.ConsoleHandler
-import java.util.logging.Level
-import java.util.logging.Logger
-import java.util.logging.SimpleFormatter
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.logging.*
+import java.util.logging.Formatter
+
+private fun getSource(): String {
+    val skipPackages = listOf(
+        "java.lang.Thread",
+        "java.util.logging.Logger",
+        "com.pawrequest.redscript.util"
+    )
+    val stackTrace = Thread.currentThread().stackTrace
+    val element = stackTrace.firstOrNull {
+        skipPackages.none { skip -> it.className.startsWith(skip) }
+    }
+    return element?.let { "(${it.fileName}:${it.lineNumber})" } ?: ""
+}
+
+private class RedscriptLogFormatter : Formatter() {
+    private val timeFormat = SimpleDateFormat("HH:mm:ss")
+    override fun format(record: LogRecord): String {
+        val time = timeFormat.format(Date(record.millis))
+        val level = record.level.name
+        val message = formatMessage(record)
+        val source = record.parameters?.firstOrNull() as? String ?: ""
+        return "$time $level $message $source\n"
+    }
+}
 
 private val logger: Logger = Logger.getLogger("RedscriptLogger").apply {
     level = Level.ALL
     handlers.forEach { removeHandler(it) }
     val consoleHandler = ConsoleHandler().apply {
         level = Level.ALL
-        formatter = SimpleFormatter()
+        formatter = RedscriptLogFormatter()
     }
     addHandler(consoleHandler)
     useParentHandlers = false
 }
 
-private fun getSource(): String {
-    val stackTrace = Thread.currentThread().stackTrace[3]
-    return "${stackTrace.methodName} | (${stackTrace.fileName}:${stackTrace.lineNumber})"
-}
-
-fun logInfo(message: String) {
-    println("$message | ${getSource()}")
-}
-
-fun logWarning(message: String) {
-    logger.warning("$message ${getSource()}")
-}
-
-fun logError(message: String) {
-    logger.severe("$message ${getSource()}")
+fun redLog(message: String, level: Level = Level.INFO) {
+    logger.log(level, message, arrayOf(getSource()))
 }

@@ -3,7 +3,7 @@ package com.pawrequest.redscript.settings
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.pawrequest.redscript.server.*
-import com.pawrequest.redscript.util.logInfo
+import com.pawrequest.redscript.util.redLog
 import javax.swing.JComponent
 
 class RedscriptConfigurable(private val project: Project) : SearchableConfigurable {
@@ -22,11 +22,6 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
         val ret = redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir ||
                 redscriptSettingsComponent!!.redscriptIDEPath != RedscriptSettings.getInstance().redscriptIDEPath ||
                 redscriptSettingsComponent!!.redscriptIDEVersion != RedscriptSettings.getInstance().redscriptIDEVersion
-//        if (ret) {
-//            logInfo("Redscript settings are modified...")
-//        } else {
-//            logInfo("Redscript settings are not modified.")
-//        }
         return ret
     }
 
@@ -63,7 +58,7 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
 
 
         if (modified) {
-            logInfo("Redscript settings modified, applying changes...")
+            redLog("Redscript settings modified, applying changes...")
             checkGameDirValid(project)
             RedscriptBinaryState.isChecked = false
             stopRedscriptLanguageServer()

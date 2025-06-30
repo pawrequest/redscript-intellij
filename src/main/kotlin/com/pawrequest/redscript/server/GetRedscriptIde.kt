@@ -49,7 +49,7 @@ fun getBinaryName(version: String? = null): String {
 //IDE VERSION
 fun getRedIDEVersionSettings(): String {
     val ret = RedscriptSettings.getInstance().redscriptIDEVersion
-    logInfo("getSettingsVersion: '$ret'")
+    redLog("getSettingsVersion: '$ret'")
     return ret
 }
 
@@ -59,12 +59,12 @@ fun setRedIDEVersionSettings(version: String) {
 
 fun getRedIDEVersionLastInstalled(): String? {
     val ret = PropertiesComponent.getInstance().getValue("redscript.ide.version")
-    logInfo("Installed version = $ret")
+    redLog("Installed version = $ret")
     return ret
 }
 
 fun setRedIDEVersionLastInstalled(version: String) {
-    logInfo("Set Last Installed IDEVersion: $version")
+    redLog("Set Last Installed IDEVersion: $version")
     PropertiesComponent.getInstance().setValue("redscript.ide.version", version)
 }
 
@@ -72,41 +72,30 @@ fun setRedIDEVersionLastInstalled(version: String) {
 // BINARY
 fun getRedIDEBinaryPathSettings(): Path {
     val ret = Paths.get(RedscriptSettings.getInstance().redscriptIDEPath)
-    logInfo("Get BinaryPath from Settings: $ret")
+    redLog("Get BinaryPath from Settings: $ret")
     return ret
 }
 
 fun setRedIDEBinaryPathSettings(path: String) {
-    logInfo("Set BinaryPath in Settings: $path")
+    redLog("Set BinaryPath in Settings: $path")
     RedscriptSettings.getInstance().redscriptIDEPath = path
 }
 
 fun getBinaryPathCacheDir(version: String? = null): Path {
     val binaryPath = getCacheDir().resolve(getBinaryName(version))
-    logInfo("CacheDir Binary Path = ${binaryPath.toAbsolutePath()}")
+    redLog("CacheDir Binary Path = ${binaryPath.toAbsolutePath()}")
     return binaryPath
 }
-
-//fun getInstalledBinaryPath(): Path{
-//    val version = getRedIDEVersionInstalled()
-//    return getBinaryPath(version)
-//
-//}
-//fun getBinaryFile(version: String? = null): File {
-//    val binaryPath = getBinaryPath(version)
-//    logInfo("getBinaryFile() called, returning: ${binaryPath.toAbsolutePath()}")
-//    return binaryPath.toFile()
-//}
 
 
 fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
     var apiUrlStr: String
     if (version.isNullOrBlank()) {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/latest"
-        logInfo("Fetching latest release info")
+        redLog("Fetching latest release info")
     } else {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/tags/$version"
-        logInfo("Fetching release info for version: $version")
+        redLog("Fetching release info for version: $version")
     }
     val binary = getDefaultBinaryName()
     val conn = githubConnection(apiUrlStr)
@@ -119,7 +108,7 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
             if (asset.getString("name") == binary) {
                 val downloadUrl = asset.getString("browser_download_url")
                 val ret = RedscriptIdeRelease(tagName, downloadUrl)
-                logInfo("Found Github asset ${ret.tagName}")
+                redLog("Found Github asset ${ret.tagName}")
                 return ret
 
             }
@@ -133,37 +122,37 @@ fun shouldDownload(version: String?): Boolean {
     val installedVersion = getRedIDEVersionLastInstalled() ?: ""
     val settingsBinary = getRedIDEBinaryPathSettings()
     if (version.equals("user-custom")) {
-        logInfo("Redscript IDE version is set to user-custom, skipping download.")
+        redLog("Redscript IDE version is set to user-custom, skipping download.")
         return false
     }
     if (settingsBinary.toFile().exists() && (settingsBinary != getBinaryPathCacheDir())) {
-        logInfo("Redscript IDE binary path in settings is non-default, not downloading.")
+        redLog("Redscript IDE binary path in settings is non-default, not downloading.")
         return false
     }
 
     if (installedVersion.isBlank() || installedVersion.equals("latest", ignoreCase = true)) {
-        logInfo("Installed version is blank, will check Redscript IDE version")
+        redLog("Installed version is blank, will check Redscript IDE version")
         return true
     }
     if (version.isNullOrBlank()) {
-        logInfo("Passed version is null or blank, will check latest Redscript IDE")
+        redLog("Passed version is null or blank, will check latest Redscript IDE")
         return true
     }
     if (version.isNotBlank() && !version.equals(installedVersion, ignoreCase = true)) {
-        logInfo("Passed version '$version' is different from installed version '$installedVersion', will check Redscript IDE version")
+        redLog("Passed version '$version' is different from installed version '$installedVersion', will check Redscript IDE version")
         return true
     }
-    logInfo("Installed version '$installedVersion' matches passed version '$version', no download needed")
+    redLog("Installed version '$installedVersion' matches passed version '$version', no download needed")
     return false
 }
 
 
 fun maybeDownloadRedscriptIde(project: Project, getVersion: String? = null) {
-    logInfo("Maybe download Redscript Ide version '$getVersion'")
+    redLog("Maybe download Redscript Ide version '$getVersion'")
 
     val binaryFile = getBinaryPathCacheDir(getVersion).toFile()
     if (!shouldDownload(getVersion) && binaryFile.exists()) {
-        logInfo("Redscript IDE is already up-to-date, no download needed.")
+        redLog("Redscript IDE is already up-to-date, no download needed.")
         return
     }
     val maxRetries = 5
@@ -171,7 +160,7 @@ fun maybeDownloadRedscriptIde(project: Project, getVersion: String? = null) {
         try {
             val release = fetchReleaseInfo(getVersion)
             if (release.tagName == getRedIDEVersionLastInstalled() && binaryFile.exists()) {
-                logInfo("Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${binaryFile.absolutePath}")
+                redLog("Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${binaryFile.absolutePath}")
                 return
             }
             Files.createDirectories(getCacheDir())
@@ -184,14 +173,15 @@ fun maybeDownloadRedscriptIde(project: Project, getVersion: String? = null) {
             setRedIDEVersionLastInstalled(release.tagName)
             setRedIDEBinaryPathSettings(binaryFile.absolutePath)
             binaryFile.setExecutable(true)
-            notifyNewBinaryDownloaded(project, release.downloadUrl)
+            val msg = "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${binaryFile.absolutePath}"
+            notifyRedscript(project, msg)
             return
         } catch (e: Exception) {
             e.printStackTrace()
             if (retryCount >= maxRetries - 1) {
-                logInfo("Max retries reached. Aborting download.")
+                redLog("Max retries reached. Aborting download.")
                 if (binaryFile.exists()) {
-                    logInfo("Failed to fetch release, using cached binary: ${binaryFile.absolutePath}")
+                    redLog("Failed to fetch release, using cached binary: ${binaryFile.absolutePath}")
                     return
                 } else {
                     throw e
@@ -199,7 +189,6 @@ fun maybeDownloadRedscriptIde(project: Project, getVersion: String? = null) {
             }
         }
     }
-//    throw IllegalStateException("Unexpected state in download logic.")
 }
 
 private val downloadLock = Any()
@@ -207,7 +196,7 @@ private val downloadLock = Any()
 fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
     synchronized(downloadLock) {
 
-        logInfo("Downloading Redscript IDE: ${release.downloadUrl}")
+        redLog("Downloading Redscript IDE: ${release.downloadUrl}")
         if (binaryFile.exists() && !binaryFile.canWrite()) {
             throw IllegalStateException("File ${binaryFile.absolutePath} is locked by another process.")
         }
@@ -221,7 +210,7 @@ fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
             }
         }
 
-        logInfo("Downloaded Redscript IDE binary to ${binaryFile.absolutePath}")
+        redLog("Downloaded Redscript IDE binary to ${binaryFile.absolutePath}")
     }
 }
 
@@ -231,7 +220,7 @@ fun githubConnection(url: String): HttpsURLConnection {
     val conn = apiUrl.openConnection() as HttpsURLConnection
     val token = System.getenv("RS4IJ-TOKEN")?.let { SecretStr(it) }
     if (token == null || token.get().isBlank()) {
-        logInfo("Warning: RS4IJ-TOKEN environment variable is not set or is empty. GitHub API rate limits may apply.")
+        redLog("Warning: RS4IJ-TOKEN environment variable is not set or is empty. GitHub API rate limits may apply.")
     } else {
         conn.setRequestProperty("Authorization", "token ${token.get()}")
     }
