@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+## [0.0.16] - 2025-07-02
+
+select redscript-ide in settings
+better logging
+
 ## [0.0.13] - 2025-06-26
 
 get latest redscript-ide binary from github
@@ -32,7 +37,8 @@ get latest redscript-ide binary from github
 
 Use edited languagejson to fix highlighting after 'new' keyword.
 
-[Unreleased]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.13...HEAD
+[Unreleased]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.16...HEAD
+[0.0.16]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.13...v0.0.16
 [0.0.13]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.9...v0.0.13
 [0.0.11]: https://github.com/pawrequest/redscript-intellij/commits/v0.0.11
 [0.0.9]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.1...v0.0.9
