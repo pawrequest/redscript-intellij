@@ -5,12 +5,19 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.pawrequest.redscript.settings.RedscriptSettings
-import com.pawrequest.redscript.settings.notifyRedscriptWithSettingsLink
+import com.pawrequest.redscript.settings.contentRootsActivity
+import com.pawrequest.redscript.settings.getRedIDEVersionSettings
+import com.pawrequest.redscript.settings.notifyRedscriptProjectWithSettingsLink
 import com.pawrequest.redscript.util.redLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.logging.Level
+
+object RedscriptState {
+    var binaryUpdateChecked: Boolean = false
+    var isInitialized: Boolean = false
+}
 
 fun checkGameDirValid(project: Project) {
     val settings = RedscriptSettings.getInstance()
@@ -18,8 +25,8 @@ fun checkGameDirValid(project: Project) {
         val message =
             "Invalid game directory: \\`${settings.gameDir}\\`. Please set a valid game directory in the Redscript settings."
         ApplicationManager.getApplication().invokeLater {
-            notifyRedscriptWithSettingsLink(project, message, type = NotificationType.ERROR)
-            redLog(message,  Level.SEVERE)
+            notifyRedscriptProjectWithSettingsLink(project, message, type = NotificationType.ERROR)
+            redLog(message, Level.SEVERE)
         }
     }
 }
@@ -30,11 +37,13 @@ class RedscriptInitializer : ProjectActivity {
         CoroutineScope(Dispatchers.IO).launch {
             checkGameDirValid(project)
 
-            if (!RedscriptBinaryState.isChecked) {
+            if (!RedscriptState.binaryUpdateChecked) {
                 redLog("Binary unchecked")
-                maybeDownloadRedscriptIde(project, getRedIDEVersionSettings())
-                RedscriptBinaryState.isChecked = true
+                maybeDownloadRedscriptIdeProject(project, getRedIDEVersionSettings())
+                RedscriptState.binaryUpdateChecked = true
             }
+//            contentRootsActivity(project)
         }
     }
 }
+
