@@ -24,13 +24,13 @@ fun contentRootsActivity(project: Project) {
     val filteredFiles1 = sourceFiles.filter{it.exists() && it.isDirectory}
 
     for (dir in sourceFiles - filteredFiles1) {
-        notifyRedscriptProject(project, "Source directory not valid: ${dir.absolutePath}", NotificationType.WARNING)
+        notifyRedscriptProjectMaybe(project, "Source directory not valid: ${dir.absolutePath}", NotificationType.WARNING)
     }
     if (filteredFiles1.isNotEmpty()) {
         addSourceRootDirsToProject(project, filteredFiles1)
         val successMessage = "Added source roots from .redscript file to Workspace:\n${filteredFiles1.joinToString("\n")}"
         redLog(successMessage)
-        notifyRedscriptProject(project, successMessage)
+        notifyRedscriptProjectMaybe(project, successMessage)
     }
 }
 

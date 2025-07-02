@@ -6,6 +6,7 @@ import com.pawrequest.redscript.settings.RedscriptSettings
 import com.pawrequest.redscript.settings.getRedIDEBinaryPathSettings
 import com.pawrequest.redscript.settings.notifyRedscriptApp
 import com.pawrequest.redscript.settings.notifyRedscriptProject
+import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
 import com.pawrequest.redscript.util.redLog
 import com.redhat.devtools.lsp4ij.LanguageServerManager
 import com.redhat.devtools.lsp4ij.ServerStatus
@@ -24,7 +25,8 @@ class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
                 msg,
                 Level.SEVERE
             )
-            notifyRedscriptApp(msg, type = NotificationType.ERROR)
+            notifyRedscriptProjectMaybe(null,msg, type = NotificationType.ERROR)
+//            notifyRedscriptApp(msg, type = NotificationType.ERROR)
 //            throw IllegalStateException("Redscript IDE binary not found at ${binaryFile.absolutePath}. Please install the Redscript IDE plugin.")
         }
         val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)
@@ -76,7 +78,7 @@ fun stopRedscriptLanguageServer() {
     }
     val msg = "Failed to stop Redscript server."
     redLog(msg, Level.WARNING)
-    notifyRedscriptProject(project, msg, type = com.intellij.notification.NotificationType.WARNING)
+    notifyRedscriptProjectMaybe(project, msg, type = com.intellij.notification.NotificationType.WARNING)
 }
 
 fun startRedscriptLanguageServer() {
