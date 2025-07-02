@@ -16,7 +16,18 @@ class RedscriptSettingsComponent {
     private val _redscriptIdePath = TextFieldWithBrowseButton()
     private val _redscriptIdeVersion = JTextField()
     private var _isInitialized = false // Prevent redundant initialization
+    private val _lastInstalledVersion = JTextField().apply {
+        isEditable = false
+        preferredSize = Dimension(200, 25)
+    }
     val panel = JPanel(GridBagLayout())
+    val constraints: GridBagConstraints = GridBagConstraints().apply {
+        gridx = 0
+        gridy = 0
+        anchor = GridBagConstraints.NORTHWEST
+        fill = GridBagConstraints.NONE
+        insets = JBUI.insets(5)
+    }
 
     var gameDir: String?
         get() = _gameDir.text
@@ -43,16 +54,24 @@ class RedscriptSettingsComponent {
         }
     }
 
-    private fun initializePanel() {
-        val constraints = GridBagConstraints().apply {
-            gridx = 0
-            gridy = 0
-            anchor = GridBagConstraints.NORTHWEST
-            fill = GridBagConstraints.NONE
-            insets = JBUI.insets(5)
-        }
+    private fun addLastInstalled() {
+        constraints.gridx = 0
+        constraints.gridy = 3
+        constraints.weightx = 0.0
+        val lastInstalledLabel = JLabel("Last Installed Redscript IDE Version:")
+        lastInstalledLabel.labelFor = _lastInstalledVersion
+        panel.add(lastInstalledLabel, constraints)
 
-        // Game Directory
+        constraints.gridx = 1
+        constraints.weightx = 1.0
+        _lastInstalledVersion.text = getRedIDEVersionLastInstalled() ?: "Unknown"
+        panel.add(_lastInstalledVersion, constraints)
+
+
+    }
+
+
+    private fun addGameDir() {
         val gameDirDescriptor =
             FileChooserDescriptorFactory.createSingleFolderDescriptor().withTitle("Select Game Directory")
         _gameDir.addBrowseFolderListener(null, gameDirDescriptor)
@@ -66,8 +85,24 @@ class RedscriptSettingsComponent {
         constraints.gridx = 1
         constraints.weightx = 1.0
         panel.add(_gameDir, constraints)
+    }
 
-        // IDE Path
+    private fun addGetVersion() {
+        constraints.gridx = 0
+        constraints.gridy = 2
+        constraints.weightx = 0.0
+        val ideVersionLabel = JLabel("Get Redscript IDE Version:")
+        ideVersionLabel.labelFor = _redscriptIdeVersion
+        panel.add(ideVersionLabel, constraints)
+        constraints.gridx = 1
+        constraints.weightx = 1.0
+        _redscriptIdeVersion.preferredSize = Dimension(200, 25)
+        _redscriptIdeVersion.background = UIUtil.getTextFieldBackground()
+        _redscriptIdeVersion.foreground = UIUtil.getTextFieldForeground()
+        panel.add(_redscriptIdeVersion, constraints)
+    }
+
+    private fun addRSIDEPath() {
         constraints.gridx = 0
         constraints.gridy = 1
         constraints.weightx = 0.0
@@ -77,31 +112,26 @@ class RedscriptSettingsComponent {
         _redscriptIdePath.preferredSize = Dimension(200, 25)
         _redscriptIdePath.minimumSize = Dimension(200, 25)
         _redscriptIdePath.maximumSize = Dimension(200, 25)
-        val idePathLabel = JLabel("Redscript IDE Path:")
+        val idePathLabel = JLabel("Select Redscript IDE Path (Blank for default):")
         idePathLabel.labelFor = _redscriptIdePath
         panel.add(idePathLabel, constraints)
         constraints.gridx = 1
         constraints.weightx = 1.0
         panel.add(_redscriptIdePath, constraints)
 
-        // IDE Version
-        constraints.gridx = 0
-        constraints.gridy = 2
-        constraints.weightx = 0.0
-        val ideVersionLabel = JLabel("Redscript IDE Version:")
-        ideVersionLabel.labelFor = _redscriptIdeVersion
-        panel.add(ideVersionLabel, constraints)
+    }
 
-        constraints.gridx = 1
-        constraints.weightx = 1.0
-        _redscriptIdeVersion.preferredSize = Dimension(200, 25)
-        _redscriptIdeVersion.background = UIUtil.getTextFieldBackground()
-        _redscriptIdeVersion.foreground = UIUtil.getTextFieldForeground()
-        panel.add(_redscriptIdeVersion, constraints)
-
-        // Empty panel to push content to the top
+    private fun addEmpty(){
         constraints.gridy = GridBagConstraints.RELATIVE
         constraints.weighty = 1.0
         panel.add(JPanel(), constraints)
+    }
+
+    private fun initializePanel() {
+        addGameDir()
+        addRSIDEPath()
+        addGetVersion()
+        addLastInstalled()
+        addEmpty()
     }
 }
