@@ -31,7 +31,7 @@ class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
 
     override fun getInitializationOptions(rootUri: com.intellij.openapi.vfs.VirtualFile?): Any {
         val options: MutableMap<String, Any> = java.util.HashMap()
-//        options["ui.semanticTokens"] = true
+        options["ui.semanticTokens"] = true
         options["game_dir"] = RedscriptSettings.getInstance().gameDir
         return options
     }
