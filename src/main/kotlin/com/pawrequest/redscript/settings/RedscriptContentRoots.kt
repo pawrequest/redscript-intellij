@@ -35,7 +35,7 @@ fun contentRootsActivity(project: Project) {
 }
 
 fun parseSourceRootDirsFromConfig(configContent: String): List<String> {
-    val sourceRootsPattern = Pattern.compile("source_roots\\s*=\\s*\\[(.*?)\\]", Pattern.DOTALL)
+    val sourceRootsPattern = Pattern.compile("source_roots\\s*=\\s*\\[(.*?)]", Pattern.DOTALL)
     val matcher = sourceRootsPattern.matcher(configContent)
 
     if (matcher.find()) {
