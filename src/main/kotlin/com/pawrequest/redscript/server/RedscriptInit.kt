@@ -7,6 +7,7 @@ import com.intellij.openapi.startup.ProjectActivity
 import com.pawrequest.redscript.settings.RedscriptSettings
 import com.pawrequest.redscript.settings.contentRootsActivity
 import com.pawrequest.redscript.settings.getRedIDEVersionSettings
+import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
 import com.pawrequest.redscript.settings.notifyRedscriptProjectWithSettingsLink
 import com.pawrequest.redscript.util.redLog
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +26,8 @@ fun checkGameDirValid(project: Project) {
         val message =
             "Invalid game directory: \\`${settings.gameDir}\\`. Please set a valid game directory in the Redscript settings."
         ApplicationManager.getApplication().invokeLater {
-            notifyRedscriptProjectWithSettingsLink(project, message, type = NotificationType.ERROR)
+            notifyRedscriptProjectMaybe(project, message, type = NotificationType.ERROR, withSettingsLink = true)
+//            notifyRedscriptProjectWithSettingsLink(project, message, type = NotificationType.ERROR)
             redLog(message, Level.SEVERE)
         }
     }
