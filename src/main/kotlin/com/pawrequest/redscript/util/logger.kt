@@ -1,5 +1,6 @@
 package com.pawrequest.redscript.util
 
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.logging.*
@@ -37,6 +38,21 @@ private val logger: Logger = Logger.getLogger("RedscriptLogger").apply {
         formatter = RedscriptLogFormatter()
     }
     addHandler(consoleHandler)
+
+    try {
+        val fileStr = System.getProperty("redscript-intellij.log.file") ?: ".redscript-ide/redscript-intellij.log"
+        val logDir = File(fileStr).parentFile
+        if (!logDir.exists()) {
+            logDir.mkdirs()
+        }
+        val fileHandler = FileHandler(fileStr, true).apply {
+            level = Level.ALL
+            formatter = RedscriptLogFormatter()
+        }
+        addHandler(fileHandler)
+    } catch (e: Exception) {
+        println("ERROR: Failed to create log file: ${e.message}")
+    }
     useParentHandlers = false
 }
 
