@@ -44,7 +44,7 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
 
         if (newIDEPath != oldIDEPath) {
             settings.redscriptIDEPath = newIDEPath
-            if (!newIDEPath.equals(getBinaryPathCacheDir())) {
+            if (!newIDEPath.equals(getBinaryPathDefault())) {
                 settings.redscriptIDEVersion = "user-custom"
             }
             modified = true
@@ -60,9 +60,8 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
         if (modified) {
             redLog("Redscript settings modified, applying changes...")
             checkGameDirValid(project)
-            RedscriptBinaryState.isChecked = false
-            stopRedscriptLanguageServer()
-            maybeDownloadRedscriptIde(project, newIDEVersion)
+            maybeDownloadRedscriptIdeProject(project, newIDEVersion)
+            RedscriptState.binaryUpdateChecked = true
             startRedscriptLanguageServer()
         }
     }
