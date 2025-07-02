@@ -14,7 +14,7 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
     override fun getDisplayName(): String = "Redscript"
 
     override fun createComponent(): JComponent {
-        redscriptSettingsComponent = RedscriptSettingsComponent()
+        redscriptSettingsComponent = RedscriptSettingsComponent(project)
         return redscriptSettingsComponent!!.panel
     }
 
