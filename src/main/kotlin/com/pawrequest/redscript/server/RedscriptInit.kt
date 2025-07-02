@@ -5,10 +5,8 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.pawrequest.redscript.settings.RedscriptSettings
-import com.pawrequest.redscript.settings.contentRootsActivity
 import com.pawrequest.redscript.settings.getRedIDEVersionSettings
 import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
-import com.pawrequest.redscript.settings.notifyRedscriptProjectWithSettingsLink
 import com.pawrequest.redscript.util.redLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +15,7 @@ import java.util.logging.Level
 
 object RedscriptState {
     var binaryUpdateChecked: Boolean = false
-    var isInitialized: Boolean = false
+//    var isInitialized: Boolean = false
 }
 
 fun checkGameDirValid(project: Project) {
