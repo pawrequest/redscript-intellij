@@ -51,7 +51,7 @@ fun stopRedscriptLanguageServer() {
     }
 //    val stopped = false
 //    for (i in 1..50) {
-    repeat(1) {
+    repeat(3) {
         when (redServerStatus) {
             ServerStatus.started, ServerStatus.starting -> {
                 redLog("Redscript server is running, stopping it now.")
