@@ -19,6 +19,11 @@ object RedscriptState {
 //    var isInitialized: Boolean = false
 }
 
+fun gameDirValid(gameDir: String): Boolean =
+    gameDir.isNotEmpty() && File(gameDir).exists() && File(gameDir).isDirectory && File(
+        gameDir, "bin/x64/Cyberpunk2077.exe"
+    ).exists()
+
 fun checkGameDirValid(project: Project) {
     val settings = RedscriptSettings.getInstance()
     if (!gameDirValid(settings.gameDir)) {
