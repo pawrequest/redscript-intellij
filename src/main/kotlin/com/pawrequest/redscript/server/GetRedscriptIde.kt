@@ -154,7 +154,7 @@ fun maybeDownloadRedscriptIdeProject(
             if (release.tagName == lastInstalled && cacheOrSettingsBinary.exists()) {
                 val msg = "Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${cacheOrSettingsBinary.absolutePath}"
                 redLog(msg)
-                notifyRedscriptProjectMaybe(project, msg)
+                notifyRedscript(project, msg)
                 return cacheOrSettingsBinary
             }
             doDownload(release, cacheOrSettingsBinary)
@@ -167,7 +167,7 @@ fun maybeDownloadRedscriptIdeProject(
             cacheOrSettingsBinary.setExecutable(true)
             val msg =
                 "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${cacheOrSettingsBinary.absolutePath}"
-            notifyRedscriptProjectMaybe(project, msg)
+            notifyRedscript(project, msg)
 //            startRedscriptLanguageServer()
             return cacheOrSettingsBinary
 
@@ -177,7 +177,7 @@ fun maybeDownloadRedscriptIdeProject(
             if (e is FileNotFoundException) {
                 redLog("File not found during download: ${e.message}")
                 if (fallbackToLatest) {
-                    notifyRedscriptProjectMaybe(project, "File not found, falling back to latest version.${e.message}.", NotificationType.WARNING)
+                    notifyRedscript(project, "File not found, falling back to latest version.${e.message}.", NotificationType.WARNING)
                     toGet = null
                     setRedIDEBinaryPathSettings(null.toString())
                 }

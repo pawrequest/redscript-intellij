@@ -4,7 +4,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.ProjectManager
 import com.pawrequest.redscript.settings.RedscriptSettings
 import com.pawrequest.redscript.settings.getRedIDEBinaryPathSettings
-import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
+import com.pawrequest.redscript.settings.notifyRedscript
 import com.pawrequest.redscript.util.redLog
 import com.redhat.devtools.lsp4ij.LanguageServerManager
 import com.redhat.devtools.lsp4ij.ServerStatus
@@ -22,7 +22,7 @@ class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
                 msg,
                 Level.SEVERE
             )
-            notifyRedscriptProjectMaybe(null,msg, type = NotificationType.ERROR)
+            notifyRedscript(null,msg, type = NotificationType.ERROR, withSettingsLink = true)
         }
         val commandLine = com.intellij.execution.configurations.GeneralCommandLine(binaryFile.absolutePath)
         super.setCommandLine(commandLine)
@@ -73,7 +73,7 @@ fun stopRedscriptLanguageServer() {
     }
     val msg = "Failed to stop Redscript server."
     redLog(msg, Level.WARNING)
-    notifyRedscriptProjectMaybe(project, msg, type = NotificationType.WARNING)
+    notifyRedscript(project, msg, type = NotificationType.WARNING)
 }
 
 fun startRedscriptLanguageServer() {
