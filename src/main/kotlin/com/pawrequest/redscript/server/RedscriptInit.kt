@@ -5,14 +5,15 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.pawrequest.redscript.settings.RedscriptSettings
-import com.pawrequest.redscript.settings.getCacheDir
-import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
+import com.pawrequest.redscript.settings.getRedIDEVersionSettings
+import com.pawrequest.redscript.settings.notifyRedscript
 import com.pawrequest.redscript.util.redLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.nio.file.Files
+import java.io.File
 import java.util.logging.Level
+import java.nio.file.Files
 
 object RedscriptState {
     var binaryUpdateChecked: Boolean = false
@@ -25,7 +26,7 @@ fun checkGameDirValid(project: Project) {
         val message =
             "Invalid game directory: \\`${settings.gameDir}\\`. Please set a valid game directory in the Redscript settings."
         ApplicationManager.getApplication().invokeLater {
-            notifyRedscriptProjectMaybe(project, message, type = NotificationType.ERROR, withSettingsLink = true)
+            notifyRedscript(project, message, type = NotificationType.ERROR, withSettingsLink = true)
 //            notifyRedscriptProjectWithSettingsLink(project, message, type = NotificationType.ERROR)
             redLog(message, Level.SEVERE)
         }
@@ -41,7 +42,7 @@ class RedscriptInitializer : ProjectActivity {
 
             if (!RedscriptState.binaryUpdateChecked) {
                 redLog("Binary unchecked")
-                maybeDownloadRedscriptIdeProject(project)
+                maybeDownloadRedscriptIdeProject(project, getRedIDEVersionSettings())
                 RedscriptState.binaryUpdateChecked = true
             }
 //            contentRootsActivity(project)

@@ -7,7 +7,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.project.Project
 
-fun notifyRedscriptProjectMaybe(project: Project?, text: String, type: NotificationType = NotificationType.INFORMATION, withSettingsLink: Boolean = false) {
+fun notifyRedscript(project: Project?, text: String, type: NotificationType = NotificationType.INFORMATION, withSettingsLink: Boolean = false) {
     val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Redscript Notifications")
     val notification = notificationGroup.createNotification(
         "Redscript IDE",

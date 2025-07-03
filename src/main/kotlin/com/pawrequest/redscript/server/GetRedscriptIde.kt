@@ -119,7 +119,9 @@ fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
 
 
 fun maybeDownloadRedscriptIdeProject(
-    project: Project, getVersion: String? = null, fallbackToLatest: Boolean = true
+    project: Project,
+    getVersion: String? = null,
+    fallbackToLatest: Boolean = true
 ): File {
     redLog("Maybe download Redscript Ide version '$getVersion'")
     var toGet: String? = getVersion
@@ -150,7 +152,7 @@ fun maybeDownloadRedscriptIdeProject(
                 val msg =
                     "Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${binaryToUse.absolutePath}"
                 redLog(msg)
-                notifyRedscriptProjectMaybe(project, msg)
+                notifyRedscript(project, msg)
                 return binaryToUse
             }
             doDownload(release, binaryToUse)
@@ -164,8 +166,8 @@ fun maybeDownloadRedscriptIdeProject(
             RedscriptSettings.setBinaryPath(binaryToUse.absolutePath)
             binaryToUse.setExecutable(true)
             val msg =
-                "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${binaryToUse.absolutePath}"
-            notifyRedscriptProjectMaybe(project, msg)
+                "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${cacheOrSettingsBinary.absolutePath}"
+            notifyRedscript(project, msg)
 //            startRedscriptLanguageServer()
             return binaryToUse
 
@@ -175,11 +177,7 @@ fun maybeDownloadRedscriptIdeProject(
             if (e is FileNotFoundException) {
                 redLog("File not found during download: ${e.message}")
                 if (fallbackToLatest) {
-                    notifyRedscriptProjectMaybe(
-                        project,
-                        "File not found, falling back to latest version.${e.message}.",
-                        NotificationType.WARNING
-                    )
+                    notifyRedscript(project, "File not found, falling back to latest version.${e.message}.", NotificationType.WARNING)
                     toGet = null
                     RedscriptSettings.setBinaryPath(null.toString())
                 }
