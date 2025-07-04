@@ -21,7 +21,7 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
     override fun isModified(): Boolean {
         val ret = redscriptSettingsComponent!!.gameDir != RedscriptSettings.getInstance().gameDir ||
                 redscriptSettingsComponent!!.redscriptIDEPath != RedscriptSettings.getInstance().redscriptIDEPath ||
-                redscriptSettingsComponent!!.redscriptIDEVersion != RedscriptSettings.getInstance().redscriptIDEVersion
+                redscriptSettingsComponent!!.redscriptIDEVersionToGet != RedscriptSettings.getInstance().redscriptIDEVersionToGet
         return ret
     }
 
@@ -29,11 +29,11 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
         val settings = RedscriptSettings.getInstance()
         val oldGameDir = settings.gameDir
         val oldIDEPath = settings.redscriptIDEPath
-        val oldIDEVersion = settings.redscriptIDEVersion
+        val oldIDEVersionToGet = settings.redscriptIDEVersionToGet
 
         val newGameDir = redscriptSettingsComponent!!.gameDir ?: System.getenv("REDCLI_GAME")
         val newIDEPath = redscriptSettingsComponent!!.redscriptIDEPath ?: ""
-        val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersion ?: ""
+        val newIDEVersion = redscriptSettingsComponent!!.redscriptIDEVersionToGet ?: ""
 
         var modified = false
 
@@ -44,14 +44,14 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
 
         if (newIDEPath != oldIDEPath) {
             settings.redscriptIDEPath = newIDEPath
-            if (!newIDEPath.equals(getBinaryPathDefault())) {
-                settings.redscriptIDEVersion = "user-custom"
+            if (!newIDEPath.equals(RedscriptSettings.getBinaryPathDefault())) {
+                settings.redscriptIDEVersionToGet = "user-custom"
             }
             modified = true
         }
 
-        if (oldIDEVersion != newIDEVersion) {
-            settings.redscriptIDEVersion = newIDEVersion
+        if (oldIDEVersionToGet != newIDEVersion) {
+            settings.redscriptIDEVersionToGet = newIDEVersion
             modified = true
         }
 
@@ -70,7 +70,7 @@ class RedscriptConfigurable(private val project: Project) : SearchableConfigurab
     override fun reset() {
         redscriptSettingsComponent!!.gameDir = RedscriptSettings.getInstance().gameDir
         redscriptSettingsComponent!!.redscriptIDEPath = RedscriptSettings.getInstance().redscriptIDEPath
-        redscriptSettingsComponent!!.redscriptIDEVersion = RedscriptSettings.getInstance().redscriptIDEVersion
+        redscriptSettingsComponent!!.redscriptIDEVersionToGet = RedscriptSettings.getInstance().redscriptIDEVersionToGet
     }
 
     override fun disposeUIResources() {

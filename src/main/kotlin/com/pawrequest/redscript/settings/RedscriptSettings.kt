@@ -9,7 +9,7 @@ import com.intellij.openapi.components.Storage
 import com.pawrequest.redscript.util.redLog
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.Locale
+import java.util.*
 
 @State(name = "RedscriptSettings", storages = [Storage("redscript.xml")])
 class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
@@ -18,7 +18,7 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
     class State {
         var gameDir: String = System.getenv("REDCLI_GAME") ?: ""
         var redscriptIDEPath: String = ""
-        var redscriptIDEVersion: String = ""
+        var redscriptIDEVersionToGet: String = ""
     }
 
     override fun getState(): State {
@@ -41,10 +41,10 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             myState.redscriptIDEPath = redscriptIDEPath
         }
 
-    var redscriptIDEVersion: String
-        get() = myState.redscriptIDEVersion
+    var redscriptIDEVersionToGet: String
+        get() = myState.redscriptIDEVersionToGet
         set(redscriptIDEVersion) {
-            myState.redscriptIDEVersion = redscriptIDEVersion
+            myState.redscriptIDEVersionToGet = redscriptIDEVersion
         }
 
 
@@ -52,6 +52,69 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
         fun getInstance(): RedscriptSettings {
             return ApplicationManager.getApplication().getService(RedscriptSettings::class.java)
         }
+
+        fun getRedIDEVersionToGet(): String {
+            val ret = getInstance().redscriptIDEVersionToGet
+            redLog("getSettingsVersion: '$ret'")
+            return ret
+        }
+
+        fun setRedIDEVersionToGet(version: String) {
+            getInstance().redscriptIDEVersionToGet = version
+        }
+
+
+        fun getRedIDEVersionInstalled(): String? {
+            val ret = PropertiesComponent.getInstance().getValue("redscript.ide.version")
+            redLog("Installed version = $ret")
+            return ret
+        }
+
+        fun setRedIDEVersionInstalled(version: String) {
+            redLog("Set Last Installed IDEVersion: $version")
+            PropertiesComponent.getInstance().setValue("redscript.ide.version", version)
+        }
+
+        fun getBinaryPath(): Path {
+            val ret = Paths.get(getInstance().redscriptIDEPath)
+            redLog("Get BinaryPath from Settings: $ret")
+            return ret
+        }
+
+        fun setBinaryPath(path: String) {
+            redLog("Set BinaryPath in Settings: $path")
+            getInstance().redscriptIDEPath = path
+        }
+
+        fun getBinaryPathDefault(version: String? = null): Path {
+            val binaryPath = getCacheDir().resolve(getBinaryName(version))
+            redLog("CacheDir Binary Path = ${binaryPath.toAbsolutePath()}")
+            return binaryPath
+        }
+
+        fun chooseBinaryPath(version: String? = null): Path {
+            val settingsPath = getBinaryPath()
+            val defaultPath = getBinaryPathDefault(version)
+            if (settingsPath.toFile().exists() && !installedBinaryIsDefaultPath(version)) {
+                redLog("Custom Binary path for version '$version': ${settingsPath.toAbsolutePath()}")
+                return settingsPath
+            }
+            redLog("Default Binary path for version '$version' cache-dir: ${defaultPath.toAbsolutePath()}")
+            return defaultPath
+        }
+
+        fun installedBinaryIsDefaultPath(version: String?): Boolean {
+            val installedPath = getBinaryPath()
+            val defaultPath = getBinaryPathDefault(version)
+            if (installedPath == defaultPath) {
+                redLog("Installed Binary path for version '$version' is the default path: ${installedPath.toAbsolutePath()}")
+                return true
+            }
+            redLog("Installed Binary path for version '$version' is NOT the default path: ${installedPath.toAbsolutePath()}")
+            return false
+        }
+
+
     }
 }
 
@@ -85,63 +148,64 @@ fun getBinaryName(version: String? = null): String {
 
 
 //IDE VERSION
-fun getRedIDEVersionSettings(): String {
-    val ret = RedscriptSettings.getInstance().redscriptIDEVersion
-    redLog("getSettingsVersion: '$ret'")
-    return ret
-}
+//fun getRedIDEVersionSettings(): String {
+//    val ret = RedscriptSettings.getInstance().redscriptIDEVersionToGet
+//    redLog("getSettingsVersion: '$ret'")
+//    return ret
+//}
 
-fun setRedIDEVersionSettings(version: String) {
-    RedscriptSettings.getInstance().redscriptIDEVersion = version
-}
+//fun setRedIDEVersionToGetSettings(version: String) {
+//    RedscriptSettings.getInstance().redscriptIDEVersionToGet = version
+//}
+//
+//fun getRedIDEVersionLastInstalled(): String? {
+//    val ret = PropertiesComponent.getInstance().getValue("redscript.ide.version")
+//    redLog("Installed version = $ret")
+//    return ret
+//}
 
-fun getRedIDEVersionLastInstalled(): String? {
-    val ret = PropertiesComponent.getInstance().getValue("redscript.ide.version")
-    redLog("Installed version = $ret")
-    return ret
-}
-
-fun setRedIDEVersionLastInstalled(version: String) {
-    redLog("Set Last Installed IDEVersion: $version")
-    PropertiesComponent.getInstance().setValue("redscript.ide.version", version)
-}
+//fun setRedIDEVersionLastInstalled(version: String) {
+//    redLog("Set Last Installed IDEVersion: $version")
+//    PropertiesComponent.getInstance().setValue("redscript.ide.version", version)
+//}
 
 
 // BINARY
-fun getRedIDEBinaryPathSettings(): Path {
-    val ret = Paths.get(RedscriptSettings.getInstance().redscriptIDEPath)
-    redLog("Get BinaryPath from Settings: $ret")
-    return ret
-}
+//fun getRedIDEBinaryPathSettings(): Path {
+//    val ret = Paths.get(RedscriptSettings.getInstance().redscriptIDEPath)
+//    redLog("Get BinaryPath from Settings: $ret")
+//    return ret
+//}
 
-fun setRedIDEBinaryPathSettings(path: String) {
-    redLog("Set BinaryPath in Settings: $path")
-    RedscriptSettings.getInstance().redscriptIDEPath = path
-}
+//fun setRedIDEBinaryPathSettings(path: String) {
+//    redLog("Set BinaryPath in Settings: $path")
+//    RedscriptSettings.getInstance().redscriptIDEPath = path
+//}
 
-fun getBinaryPathDefault(version: String? = null): Path {
-    val binaryPath = getCacheDir().resolve(getBinaryName(version))
-    redLog("CacheDir Binary Path = ${binaryPath.toAbsolutePath()}")
-    return binaryPath
-}
+//fun getBinaryPathDefault(version: String? = null): Path {
+//    val binaryPath = getCacheDir().resolve(getBinaryName(version))
+//    redLog("CacheDir Binary Path = ${binaryPath.toAbsolutePath()}")
+//    return binaryPath
+//}
+//
+//fun getBinaryPathSettingsOrDefault(version: String? = null): Path {
+//    val settingsPath = RedscriptSettings.getRedIDEBinaryPathSettings()
+//    val cachePath = RedscriptSettings.getBinaryPathDefault(version)
+//    if (settingsPath.toFile().exists()) {
+//        redLog("Binary path from settings: ${settingsPath.toAbsolutePath()}")
+//        return settingsPath
+//    }
+//    redLog("Binary path from cache: ${cachePath.toAbsolutePath()}")
+//    return cachePath
+//}
 
-fun getBinaryPathSettingsOrDefault(version: String? = null): Path {
-    val settingsPath = getRedIDEBinaryPathSettings()
-    val cachePath = getBinaryPathDefault(version)
-    if (settingsPath.toFile().exists()) {
-        redLog("Binary path from settings: ${settingsPath.toAbsolutePath()}")
-        return settingsPath
-    }
-    redLog("Binary path from cache: ${cachePath.toAbsolutePath()}")
-    return cachePath
-}
-fun chooseBinaryPath(version: String? = null): Path {
-    val settingsPath = getRedIDEBinaryPathSettings()
-    val cachePath = getBinaryPathDefault(version)
-    if (settingsPath.toFile().exists() && settingsPath != cachePath) {
-        redLog("Binary path from settings non standard: ${settingsPath.toAbsolutePath()}")
-        return settingsPath
-    }
-    redLog("Standard Binary path from cache-dir: ${cachePath.toAbsolutePath()}")
-    return cachePath
-}
+//fun chooseBinaryPath(version: String? = null): Path {
+//    val settingsPath = RedscriptSettings.getRedIDEBinaryPathSettings()
+//    val cachePath = RedscriptSettings.getBinaryPathDefault(version)
+//    if (settingsPath.toFile().exists() && settingsPath != cachePath) {
+//        redLog("Custom Binary path for version '$version': ${settingsPath.toAbsolutePath()}")
+//        return settingsPath
+//    }
+//    redLog("Default Binary path for version $version cache-dir: ${cachePath.toAbsolutePath()}")
+//    return cachePath
+//}

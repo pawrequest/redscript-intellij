@@ -3,7 +3,6 @@ package com.pawrequest.redscript.server
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.ProjectManager
 import com.pawrequest.redscript.settings.RedscriptSettings
-import com.pawrequest.redscript.settings.getRedIDEBinaryPathSettings
 import com.pawrequest.redscript.settings.notifyRedscriptProjectMaybe
 import com.pawrequest.redscript.util.redLog
 import com.redhat.devtools.lsp4ij.LanguageServerManager
@@ -14,7 +13,7 @@ import java.util.logging.Level
 
 class RedscriptLanguageServer : OSProcessStreamConnectionProvider() {
     init {
-        var binaryFile = getRedIDEBinaryPathSettings().toFile()
+        var binaryFile = RedscriptSettings.getBinaryPath().toFile()
         if (!binaryFile.exists()) {
 //            binaryFile = getDefaultBinary()
             val msg = "Redscript IDE binary not found at ${binaryFile.absolutePath}. Please install the Redscript IDE plugin."

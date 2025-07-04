@@ -17,7 +17,7 @@ class RedscriptSettingsComponent(private val project: Project) {
 
     private val _gameDir = TextFieldWithBrowseButton()
     private val _redscriptIdePath = TextFieldWithBrowseButton()
-    private val _redscriptIdeVersion = JTextField()
+    private val _redscriptIdeVersionToGet = JTextField()
     private var _isInitialized = false // Prevent redundant initialization
     private val _lastInstalledVersion = JTextField().apply {
         isEditable = false
@@ -53,10 +53,10 @@ class RedscriptSettingsComponent(private val project: Project) {
             _redscriptIdePath.text = value ?: ""
         }
 
-    var redscriptIDEVersion: String?
-        get() = _redscriptIdeVersion.text
+    var redscriptIDEVersionToGet: String?
+        get() = _redscriptIdeVersionToGet.text
         set(value) {
-            _redscriptIdeVersion.text = value ?: ""
+            _redscriptIdeVersionToGet.text = value ?: ""
         }
 
 
@@ -70,7 +70,7 @@ class RedscriptSettingsComponent(private val project: Project) {
 
         constraints.gridx = 1
         constraints.weightx = 1.0
-        _lastInstalledVersion.text = getRedIDEVersionLastInstalled() ?: "Unknown"
+        _lastInstalledVersion.text = RedscriptSettings.getRedIDEVersionInstalled() ?: "Unknown"
         panel.add(_lastInstalledVersion, constraints)
 
 
@@ -112,14 +112,14 @@ class RedscriptSettingsComponent(private val project: Project) {
         constraints.gridy = gridY
         constraints.weightx = 0.0
         val ideVersionLabel = JLabel("Get Redscript IDE Version:")
-        ideVersionLabel.labelFor = _redscriptIdeVersion
+        ideVersionLabel.labelFor = _redscriptIdeVersionToGet
         panel.add(ideVersionLabel, constraints)
         constraints.gridx = 1
         constraints.weightx = 1.0
-        _redscriptIdeVersion.preferredSize = Dimension(200, 25)
-        _redscriptIdeVersion.background = UIUtil.getTextFieldBackground()
-        _redscriptIdeVersion.foreground = UIUtil.getTextFieldForeground()
-        panel.add(_redscriptIdeVersion, constraints)
+        _redscriptIdeVersionToGet.preferredSize = Dimension(200, 25)
+        _redscriptIdeVersionToGet.background = UIUtil.getTextFieldBackground()
+        _redscriptIdeVersionToGet.foreground = UIUtil.getTextFieldForeground()
+        panel.add(_redscriptIdeVersionToGet, constraints)
     }
 
     private fun addRSIDEPath(gridY: Int) {
