@@ -127,11 +127,21 @@ fun getBinaryPathDefault(version: String? = null): Path {
 
 fun getBinaryPathSettingsOrDefault(version: String? = null): Path {
     val settingsPath = getRedIDEBinaryPathSettings()
+    val cachePath = getBinaryPathDefault(version)
     if (settingsPath.toFile().exists()) {
         redLog("Binary path from settings: ${settingsPath.toAbsolutePath()}")
         return settingsPath
     }
-    val cachePath = getBinaryPathDefault(version)
     redLog("Binary path from cache: ${cachePath.toAbsolutePath()}")
+    return cachePath
+}
+fun chooseBinaryPath(version: String? = null): Path {
+    val settingsPath = getRedIDEBinaryPathSettings()
+    val cachePath = getBinaryPathDefault(version)
+    if (settingsPath.toFile().exists() && settingsPath != cachePath) {
+        redLog("Binary path from settings non standard: ${settingsPath.toAbsolutePath()}")
+        return settingsPath
+    }
+    redLog("Standard Binary path from cache-dir: ${cachePath.toAbsolutePath()}")
     return cachePath
 }
