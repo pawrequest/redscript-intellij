@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [0.0.17] - 2025-07-04
+
+Jetbrains Marketplace verification has been fixed, In-IDE plugin browser returns to recomended install method.
+
 ## [0.0.16] - 2025-07-02
 
 select redscript-ide in settings
@@ -37,7 +41,8 @@ get latest redscript-ide binary from github
 
 Use edited languagejson to fix highlighting after 'new' keyword.
 
-[Unreleased]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.16...HEAD
+[Unreleased]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.17...HEAD
+[0.0.17]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.16...v0.0.17
 [0.0.16]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.13...v0.0.16
 [0.0.13]: https://github.com/pawrequest/redscript-intellij/compare/v0.0.9...v0.0.13
 [0.0.11]: https://github.com/pawrequest/redscript-intellij/commits/v0.0.11
