@@ -176,8 +176,9 @@ fun downloadAndExtractRepoZip(
 tasks {
     val dlTextMateBundle by registering(Copy::class) {
         downloadAndExtractRepoZip(
-            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/master.zip",
-//            "https://github.com/jackhumbert/redscript-syntax-highlighting/archive/refs/heads/master.zip",
+            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/reverted.zip",
+//            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/dev.zip",
+//            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/master.zip",
             file("src/main/resources/textmate"),
             allowedPaths = setOf(
                 "package.json", "language-configuration.json", "syntaxes/redscript.tmLanguage.json"
