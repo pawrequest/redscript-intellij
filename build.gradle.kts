@@ -187,7 +187,7 @@ tasks {
     }
 
     processResources {
-        dependsOn(dlTextMateBundle, "generateRedscriptIdeVersion")
+        dependsOn(dlTextMateBundle)
     }
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
@@ -216,17 +216,17 @@ intellijPlatformTesting {
     }
 }
 
-tasks.register("generateRedscriptIdeVersion") {
-    val outputDir = layout.buildDirectory.dir("generated/resources")
-    outputs.dir(outputDir)
-    doLast {
-        val file = outputDir.get().file("redscript-ide-version.txt").asFile
-        file.parentFile.mkdirs()
-        file.writeText(libs.versions.redscriptide.get())
-    }
-}
-sourceSets {
-    main {
-        resources.srcDir(layout.buildDirectory.dir("generated/resources"))
-    }
-}
+//tasks.register("generateRedscriptIdeVersion") {
+//    val outputDir = layout.buildDirectory.dir("generated/resources")
+//    outputs.dir(outputDir)
+//    doLast {
+//        val file = outputDir.get().file("redscript-ide-version.txt").asFile
+//        file.parentFile.mkdirs()
+//        file.writeText(libs.versions.redscriptide.get())
+//    }
+//}
+//sourceSets {
+//    main {
+//        resources.srcDir(layout.buildDirectory.dir("generated/resources"))
+//    }
+//}
