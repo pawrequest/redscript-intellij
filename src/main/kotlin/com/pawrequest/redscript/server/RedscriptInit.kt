@@ -48,7 +48,6 @@ class RedscriptInitializer : ProjectActivity {
                 maybeDownloadRedscriptIdeProject(project, getRedIDEVersionSettings())
                 RedscriptState.binaryUpdateChecked = true
             }
-//            contentRootsActivity(project)
         }
     }
 }
