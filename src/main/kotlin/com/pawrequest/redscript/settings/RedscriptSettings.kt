@@ -92,16 +92,16 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             return binaryPath
         }
 
-        fun chooseBinaryPath(version: String? = null): Path {
-            val settingsPath = getBinaryPath()
-            val defaultPath = getBinaryPathDefault(version)
-            if (settingsPath.toFile().exists() && !installedBinaryIsDefaultPath(version)) {
-                redLog("Custom Binary path for version '$version': ${settingsPath.toAbsolutePath()}")
-                return settingsPath
-            }
-            redLog("Default Binary path for version '$version' cache-dir: ${defaultPath.toAbsolutePath()}")
-            return defaultPath
-        }
+//        fun chooseBinaryPath(version: String? = null): Path {
+//            val settingsPath = getBinaryPath()
+//            val defaultPath = getBinaryPathDefault(version)
+//            if (settingsPath.toFile().exists() && !installedBinaryIsDefaultPath(version)) {
+//                redLog("Custom Binary path for version '$version': ${settingsPath.toAbsolutePath()}")
+//                return settingsPath
+//            }
+//            redLog("Default Binary path for version '$version' cache-dir: ${defaultPath.toAbsolutePath()}")
+//            return defaultPath
+//        }
 
         fun installedBinaryIsDefaultPath(version: String?): Boolean {
             val installedPath = getBinaryPath()
