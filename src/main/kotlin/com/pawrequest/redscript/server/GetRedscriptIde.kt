@@ -62,35 +62,6 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
 }
 
 
-fun shouldDownload2(version: String?, settingsBinary: Path): Boolean {
-    val installedVersion = RedscriptSettings.getRedIDEVersionInstalled() ?: ""
-    if (version.isNullOrBlank()) {
-        redLog("Passed version is null or blank, will check latest Redscript IDE")
-        return true
-    } else if (!settingsBinary.toFile().exists()) {
-        redLog("Redscript IDE binary path in settings does not exist - downloading.")
-        return true
-    } else if (version == "user-custom") {
-        redLog("Passed version is set to user-custom and settings binary exists, not downloading.")
-        return false
-    } else if (version.equals(installedVersion, ignoreCase = true)) {
-        redLog("Installed version '$installedVersion' matches passed version '$version', no download needed")
-        return false
-    } else if (version.isNotBlank() && !version.equals(installedVersion, ignoreCase = true)) {
-        redLog("Passed version '$version' is different from installed version '$installedVersion', will check Redscript IDE version")
-        return true
-    } else if (!RedscriptSettings.installedBinaryIsDefaultPath(version)) {
-        redLog("Redscript IDE binary path in settings is non-default for version $version, not downloading.")
-        return false
-    } else if (installedVersion.isBlank() || installedVersion.equals("latest", ignoreCase = true)) {
-        redLog("Installed version is blank and shouldn't be user custom version, will check Redscript IDE version")
-        return true
-    } else {
-        redLog("No conditions met for skipping download, will check Redscript IDE version")
-        return true
-    }
-
-}
 
 fun shouldDownload(version: String?): Boolean {
     val settingsBinary = RedscriptSettings.getBinaryPath()
