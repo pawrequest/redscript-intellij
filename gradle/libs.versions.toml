@@ -2,7 +2,6 @@
 # libraries
 junit = "4.13.2"
 java = "21"
-redscriptide = "v0.1.46"
 org-json = "20250517"
 
 
