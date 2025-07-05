@@ -2,15 +2,15 @@ package com.pawrequest.redscript.server
 
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
-import com.pawrequest.redscript.util.*
-
-import com.pawrequest.redscript.settings.*
+import com.pawrequest.redscript.settings.RedscriptSettings
+import com.pawrequest.redscript.settings.notifyRedscript
+import com.pawrequest.redscript.util.SecretStr
+import com.pawrequest.redscript.util.redLog
 import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.net.URI
-import java.nio.file.Path
 import java.util.logging.Level
 import javax.net.ssl.HttpsURLConnection
 
@@ -41,7 +41,7 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/tags/$version"
         redLog("Fetching release info for version: $version")
     }
-    val binary = getDefaultBinaryName()
+    val binary = RedscriptSettings.getDefaultBinaryName()
     val conn = githubConnection(apiUrlStr)
     conn.inputStream.bufferedReader().use { reader ->
         val json = JSONObject(reader.readText())
@@ -166,7 +166,7 @@ fun maybeDownloadRedscriptIdeProject(
             RedscriptSettings.setBinaryPath(binaryToUse.absolutePath)
             binaryToUse.setExecutable(true)
             val msg =
-                "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${cacheOrSettingsBinary.absolutePath}"
+                "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${binaryToUse.absolutePath}"
             notifyRedscript(project, msg)
 //            startRedscriptLanguageServer()
             return binaryToUse

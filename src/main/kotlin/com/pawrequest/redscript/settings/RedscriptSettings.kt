@@ -114,37 +114,40 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             return false
         }
 
+        fun getCacheDir(): Path {
+            val ret = Paths.get(System.getProperty("user.home"), ".redscript-ide")
+            return ret
+        }
+
+
+        fun getDefaultBinaryName(): String {
+            val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
+            val ret = when {
+                osName.contains("win") -> "redscript-ide.exe"
+                osName.contains("mac") -> "redscript-ide-x86_64-apple-darwin"
+                osName.contains("linux") -> "redscript-ide-x86_64-unknown-linux-gnu"
+                else -> throw UnsupportedOperationException("Unsupported platform: $osName")
+            }
+            return ret
+        }
+
+        fun getBinaryName(version: String? = null): String {
+            val baseName = getDefaultBinaryName()
+            if (version.isNullOrEmpty() || version.equals("latest", ignoreCase = true)) {
+                return baseName
+            }
+            return if (baseName.endsWith(".exe")) {
+                baseName.removeSuffix(".exe") + "-$version.exe"
+            } else {
+                "$baseName-$version"
+            }
+        }
+
+
 
     }
 }
 
-fun getCacheDir(): Path {
-    val ret = Paths.get(System.getProperty("user.home"), ".redscript-ide")
-    return ret
-}
-
-fun getDefaultBinaryName(): String {
-    val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
-    val ret = when {
-        osName.contains("win") -> "redscript-ide.exe"
-        osName.contains("mac") -> "redscript-ide-x86_64-apple-darwin"
-        osName.contains("linux") -> "redscript-ide-x86_64-unknown-linux-gnu"
-        else -> throw UnsupportedOperationException("Unsupported platform: $osName")
-    }
-    return ret
-}
-
-fun getBinaryName(version: String? = null): String {
-    val baseName = getDefaultBinaryName()
-    if (version.isNullOrEmpty() || version.equals("latest", ignoreCase = true)) {
-        return baseName
-    }
-    return if (baseName.endsWith(".exe")) {
-        baseName.removeSuffix(".exe") + "-$version.exe"
-    } else {
-        "$baseName-$version"
-    }
-}
 
 
 //IDE VERSION

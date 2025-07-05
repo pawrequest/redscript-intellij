@@ -5,7 +5,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.pawrequest.redscript.settings.RedscriptSettings
-import com.pawrequest.redscript.settings.getRedIDEVersionSettings
 import com.pawrequest.redscript.settings.notifyRedscript
 import com.pawrequest.redscript.util.redLog
 import kotlinx.coroutines.CoroutineScope
@@ -42,12 +41,12 @@ fun checkGameDirValid(project: Project) {
 class RedscriptInitializer : ProjectActivity {
     override suspend fun execute(project: Project) {
         CoroutineScope(Dispatchers.IO).launch {
-            Files.createDirectories(getCacheDir())
+            Files.createDirectories(RedscriptSettings.getCacheDir())
             checkGameDirValid(project)
 
             if (!RedscriptState.binaryUpdateChecked) {
                 redLog("Binary unchecked")
-                maybeDownloadRedscriptIdeProject(project, getRedIDEVersionSettings())
+                maybeDownloadRedscriptIdeProject(project, RedscriptSettings.getRedIDEVersionToGet())
                 RedscriptState.binaryUpdateChecked = true
             }
         }
