@@ -1,4 +1,50 @@
-# GPT 4.1 says
+# DAP
+
+To integrate the redscript-dap (Debug Adapter Protocol server for redscript) into your IntelliJ plugin, follow these
+steps:
+
+1. Download or Bundle the DAP Binary
+
+Use a similar approach as with redscript-ide: download the DAP binary from GitHub releases or bundle it with your
+plugin.
+You can automate the download in your Gradle build or at runtime, using code similar to your GetRedscriptIde.kt.
+
+2. Start the DAP Server Process
+
+Launch the DAP server as an external process from your plugin, passing the required arguments (see the DAP repo README
+for CLI usage).
+Use ProcessBuilder or similar in Kotlin/Java.
+
+3. Implement a Debugger Integration
+
+Use the IntelliJ Platform Debugger API to create a custom debug process.
+Implement a DebugProcess and DebugProcessStarter that communicates with the DAP server using the Debug Adapter
+Protocol (JSON-RPC over stdio or TCP).
+
+4. Use an Existing DAP Client Library (Optional)
+
+Consider using a Java/Kotlin DAP client library, or implement the protocol yourself (see vscode-java-debug for
+reference).
+
+5. Register the Debugger in plugin.xml
+
+Add the debugger extension points in your plugin.xml to make it available for redscript files.
+Summary of Steps in Code/Config:
+
+Add code to download or locate the redscript-dap binary.
+Start the DAP server process when debugging is requested.
+Implement the IntelliJ debug process to communicate with the DAP server.
+Register the debugger in plugin.xml.
+References:
+
+IntelliJ Debugger API Docs
+redscript-dap Usage
+This is a non-trivial integration, but you can reuse much of your existing infrastructure for downloading and managing
+external binaries. The main work is in implementing the Debugger integration layer.
+
+# re no 0.1.46
+
+## GPT 4.1 says
 
 The key difference is in the URI format returned by the textDocument/definition response:
 
@@ -44,7 +90,6 @@ Params: {
 }
 }
 
-
 [Trace - 00:12:02] Received response 'textDocument/definition - (3)' in 0ms.
 Result: [
 {
@@ -62,7 +107,6 @@ Result: [
 }
 ]
 
-
 [Trace - 00:12:02] Sending request 'textDocument/definition - (4)'.
 Params: {
 "textDocument": {
@@ -73,7 +117,6 @@ Params: {
 "character": 1
 }
 }
-
 
 [Trace - 00:12:02] Received response 'textDocument/definition - (4)' in 0ms.
 Result: []
