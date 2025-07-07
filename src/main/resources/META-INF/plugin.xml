@@ -7,9 +7,11 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.redhat.devtools.lsp4ij</depends>
     <depends>org.jetbrains.plugins.textmate</depends>
+    <depends>com.intellij.modules.lang</depends>
 
 
     <extensions defaultExtensionNs="com.intellij">
+<!--        <runConfigurationType implementation="com.pawrequest.redscript.debug.RedscriptAttachConfigurationType"/>-->
         <postStartupActivity implementation="com.pawrequest.redscript.server.RedscriptInitializer"/>
         <notificationGroup
                 id="Redscript Notifications"
@@ -78,8 +80,20 @@
         <!-- end of clojure code -->
     </extensions>
 
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <debugAdapterServer
+                id="typescript"
+                factoryClass="my.dap.server.TypeScriptDebugAdapterDescriptorFactory" />
+<!--                name="TypeScript"-->
+    </extensions>
+
     <!--    lsp     -->
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+<!--        <debugAdapterServer-->
+<!--                id="typescript"-->
+<!--                name="TypeScript"-->
+<!--                factoryClass="my.dap.server.TypeScriptDebugAdapterDescriptorFactory" />-->
 <!--        <debugAdapterServer-->
 <!--                id="Redscript"-->
 <!--                name="Redscript DAP Server"-->

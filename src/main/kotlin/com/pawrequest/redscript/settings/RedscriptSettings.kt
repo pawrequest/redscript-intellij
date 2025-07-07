@@ -53,6 +53,12 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             return ApplicationManager.getApplication().getService(RedscriptSettings::class.java)
         }
 
+        fun getGameDir(): String {
+            val ret = getInstance().gameDir
+            redLog("getGameDir: '$ret'")
+            return ret
+        }
+
         fun getRedIDEVersionToGet(): String {
             val ret = getInstance().redscriptIDEVersionToGet
             redLog("getSettingsVersion: '$ret'")

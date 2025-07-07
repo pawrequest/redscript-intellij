@@ -6,6 +6,8 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.pawrequest.redscript.settings.RedscriptSettings
+import kotlin.io.path.absolutePathString
 
 // RedscriptAttachRunProfileState.kt
 class RedscriptAttachRunProfileState(
@@ -17,7 +19,7 @@ class RedscriptAttachRunProfileState(
         // Start a DAP client attached to the port
         // (You may need to use a plugin or library for DAP support)
         // For demonstration, just connect to the port:
-        val commandLine = GeneralCommandLine("your-dap-client", "--port", port.toString())
+        val commandLine = GeneralCommandLine(RedscriptSettings.getRedDapBinaryPath().absolutePathString(), "--port", port.toString())
         return KillableProcessHandler(commandLine)
     }
 }
