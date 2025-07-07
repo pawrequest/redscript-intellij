@@ -14,7 +14,7 @@ import java.net.URI
 import java.util.logging.Level
 import javax.net.ssl.HttpsURLConnection
 
-data class RedscriptIdeRelease(val tagName: String, val downloadUrl: String)
+data class GithubReleaseInfo(val tagName: String, val downloadUrl: String)
 
 
 fun githubConnection(url: String): HttpsURLConnection {
@@ -31,8 +31,13 @@ fun githubConnection(url: String): HttpsURLConnection {
     conn.readTimeout = 5000
     return conn
 }
+fun fetchRedscriptDapInfo() : GithubReleaseInfo {
+    val apiUrlStr = "https://github.com/jac3km4/redscript-dap/releases/latest"
+    redLog("Fetching latest Redscript DAP release info")
+    return fetchReleaseInfo(apiUrlStr)
+}
 
-fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
+fun fetchRedIdeReleaseInfo(version: String? = null): GithubReleaseInfo {
     var apiUrlStr: String
     if (version.isNullOrBlank()) {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/latest"
@@ -41,6 +46,10 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/tags/$version"
         redLog("Fetching release info for version: $version")
     }
+    return fetchReleaseInfo(apiUrlStr)
+}
+
+fun fetchReleaseInfo(apiUrlStr: String): GithubReleaseInfo {
     val binary = RedscriptSettings.getDefaultBinaryName()
     val conn = githubConnection(apiUrlStr)
     conn.inputStream.bufferedReader().use { reader ->
@@ -51,9 +60,9 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
             val asset = assets.getJSONObject(i)
             if (asset.getString("name") == binary) {
                 val downloadUrl = asset.getString("browser_download_url")
-                val ret = RedscriptIdeRelease(tagName, downloadUrl)
-                redLog("Found Github asset ${ret.tagName}")
-                return ret
+                val release = GithubReleaseInfo(tagName, downloadUrl)
+                redLog("Found Github asset ${release.tagName}")
+                return release
 
             }
         }
@@ -63,7 +72,7 @@ fun fetchReleaseInfo(version: String? = null): RedscriptIdeRelease {
 
 
 
-fun shouldDownload(version: String?): Boolean {
+fun shouldDownloadIdeBinary(version: String?): Boolean {
     val settingsBinary = RedscriptSettings.getBinaryPath()
     val installedVersion = RedscriptSettings.getRedIDEVersionInstalled() ?: ""
     if (version.isNullOrBlank()) {
@@ -96,7 +105,7 @@ fun shouldDownload(version: String?): Boolean {
 
 private val downloadLock = Any()
 
-fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
+fun doDownload(release: GithubReleaseInfo, binaryFile: File) {
     synchronized(downloadLock) {
 
         redLog("Downloading Redscript IDE: ${release.downloadUrl}")
@@ -117,6 +126,10 @@ fun doDownload(release: RedscriptIdeRelease, binaryFile: File) {
     }
 }
 
+//fun maybeDownloadRedscriptDAP(project: Project) : File {
+//    val release = chooseRedscriptDAP()
+//    }
+
 
 fun maybeDownloadRedscriptIdeProject(
     project: Project,
@@ -134,7 +147,7 @@ fun maybeDownloadRedscriptIdeProject(
 //        redLog("Binary path from settings does not exist, using default binary path.")
 //        binaryToUse = RedscriptSettings.getBinaryPathDefault(toGet).toFile()
 //    }
-    if (!shouldDownload(toGet)) {
+    if (!shouldDownloadIdeBinary(toGet)) {
         redLog("Redscript IDE is already up-to-date, no download needed.")
         return binaryToUse
     }
@@ -147,7 +160,7 @@ fun maybeDownloadRedscriptIdeProject(
     val maxRetries = 5
     for (retryCount in 0 until maxRetries) {
         try {
-            val release = fetchReleaseInfo(toGet)
+            val release = fetchRedIdeReleaseInfo(toGet)
             if (release.tagName == lastInstalled && binaryToUse.exists()) {
                 val msg =
                     "Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${binaryToUse.absolutePath}"
