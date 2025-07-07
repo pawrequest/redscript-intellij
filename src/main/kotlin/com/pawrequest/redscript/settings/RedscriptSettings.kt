@@ -93,6 +93,14 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             return binaryPath
         }
 
+        fun getDapName():String{
+            return "redscript_dap.dll"
+        }
+
+        fun getRedDapBinaryPath(): Path {
+            return getCacheDir().resolve(Paths.get(getDapName()))
+        }
+
         fun getRedDapVersionInstalled(): String? {
             val ret = PropertiesComponent.getInstance().getValue("redscript.dap.version")
             redLog("Installed DAP version = $ret")
@@ -104,9 +112,6 @@ class RedscriptSettings : PersistentStateComponent<RedscriptSettings.State?> {
             PropertiesComponent.getInstance().setValue("redscript.dap.version", version)
         }
 
-        fun getRedDapVersionBinaryPath(): Path {
-            return getCacheDir().resolve(Paths.get("redscript_dap.dll"))
-        }
 
 
         fun installedBinaryIsDefaultPath(version: String?): Boolean {

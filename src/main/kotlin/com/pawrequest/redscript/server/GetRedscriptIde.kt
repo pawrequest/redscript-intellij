@@ -32,8 +32,9 @@ fun githubConnection(url: String): HttpsURLConnection {
     return conn
 }
 
+
 fun fetchRedscriptDapInfo(): GithubReleaseInfo {
-    val binaryName = "redscript_dap.dll"
+    val binaryName = RedscriptSettings.getDapName()
     val apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-dap/releases/latest"
     redLog("Fetching latest Redscript DAP release info")
     return fetchReleaseInfo(apiUrlStr, binaryName)
@@ -130,10 +131,10 @@ fun doDownload(release: GithubReleaseInfo, binaryFile: File) {
 fun maybeDownloadRedDap(project: Project): File {
     val installedVersion = RedscriptSettings.getRedDapVersionInstalled()
     val latestRelease = fetchRedscriptDapInfo()
-    val binaryToUse: File = RedscriptSettings.getRedDapVersionBinaryPath().toFile()
+    val binaryToUse: File = RedscriptSettings.getRedDapBinaryPath().toFile()
     if (latestRelease.tagName == installedVersion) {
         redLog("Redscript DAP is already up-to-date, no download needed.")
-        return RedscriptSettings.getRedDapVersionBinaryPath().toFile()
+        return RedscriptSettings.getRedDapBinaryPath().toFile()
     }
     redLog("Redscript DAP version '$installedVersion' is different from latest version '${latestRelease.tagName}', downloading...")
     doDownload(latestRelease, binaryToUse)
