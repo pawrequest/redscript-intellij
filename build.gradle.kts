@@ -177,8 +177,6 @@ tasks {
     val dlTextMateBundle by registering(Copy::class) {
         downloadAndExtractRepoZip(
             "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/reverted.zip",
-//            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/dev.zip",
-//            "https://github.com/pawrequest/redscript-syntax-highlighting/archive/refs/heads/master.zip",
             file("src/main/resources/textmate"),
             allowedPaths = setOf(
                 "package.json", "language-configuration.json", "syntaxes/redscript.tmLanguage.json"
@@ -216,18 +214,3 @@ intellijPlatformTesting {
         }
     }
 }
-
-//tasks.register("generateRedscriptIdeVersion") {
-//    val outputDir = layout.buildDirectory.dir("generated/resources")
-//    outputs.dir(outputDir)
-//    doLast {
-//        val file = outputDir.get().file("redscript-ide-version.txt").asFile
-//        file.parentFile.mkdirs()
-//        file.writeText(libs.versions.redscriptide.get())
-//    }
-//}
-//sourceSets {
-//    main {
-//        resources.srcDir(layout.buildDirectory.dir("generated/resources"))
-//    }
-//}
