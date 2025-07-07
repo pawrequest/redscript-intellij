@@ -72,44 +72,6 @@ fun fetchReleaseInfo(apiUrlStr: String, binaryName: String): GithubReleaseInfo {
     }
 }
 
-fun fetchReleaseInfo1(apiUrlStr: String): GithubReleaseInfo {
-    val binary = RedscriptSettings.getDefaultBinaryName()
-    val conn = githubConnection(apiUrlStr)
-    conn.inputStream.bufferedReader().use { reader ->
-        val json = JSONObject(reader.readText())
-        val tagName = json.getString("tag_name")
-        val assets = json.getJSONArray("assets")
-        for (i in 0 until assets.length()) {
-            val asset = assets.getJSONObject(i)
-            if (asset.getString("name") == binary) {
-                val downloadUrl = asset.getString("browser_download_url")
-                val release = GithubReleaseInfo(tagName, downloadUrl)
-                redLog("Found Github asset ${release.tagName}")
-                return release
-
-            }
-        }
-        error("No asset named $binary found in latest release")
-    }
-}
-
-//fun shouldDownloadRedscriptDap(version: String?): Boolean {
-//    val installedVersion = RedscriptSettings.getRedDapVersionInstalled() ?: ""
-//    if (version.isNullOrBlank()) {
-//        redLog("Passed version is null or blank, will check latest Redscript DAP")
-//        return true
-//    } else if (version.equals(installedVersion, ignoreCase = true)) {
-//        redLog("Installed version '$installedVersion' matches passed version '$version', no download needed")
-//        return false
-//    } else if (version.isNotBlank() && !version.equals(installedVersion, ignoreCase = true)) {
-//        redLog("Passed version '$version' is different from installed version '$installedVersion', will check Redscript DAP version")
-//        return true
-//    } else {
-//        redLog("No conditions met for skipping download, will check Redscript DAP version")
-//        return true
-//    }
-//}
-
 fun shouldDownloadIdeBinary(version: String?): Boolean {
     val settingsBinary = RedscriptSettings.getBinaryPath()
     val installedVersion = RedscriptSettings.getRedIDEVersionInstalled() ?: ""
@@ -164,9 +126,6 @@ fun doDownload(release: GithubReleaseInfo, binaryFile: File) {
     }
 }
 
-//fun maybeDownloadRedscriptDAP(project: Project) : File {
-//    val release = chooseRedscriptDAP()
-//    }
 
 fun maybeDownloadRedDap(project: Project): File {
     val installedVersion = RedscriptSettings.getRedDapVersionInstalled()
@@ -178,28 +137,24 @@ fun maybeDownloadRedDap(project: Project): File {
     }
     redLog("Redscript DAP version '$installedVersion' is different from latest version '${latestRelease.tagName}', downloading...")
     doDownload(latestRelease, binaryToUse)
-    notifyRedscript(project, "Redscript DAP version '${latestRelease.tagName}' downloaded successfully to ${binaryToUse.absolutePath}")
+    notifyRedscript(
+        project,
+        "Redscript DAP version '${latestRelease.tagName}' downloaded successfully to ${binaryToUse.absolutePath}"
+    )
     RedscriptSettings.setRedDapVersionInstalled(latestRelease.tagName)
     return binaryToUse
 }
 
 
 fun maybeDownloadRedscriptIdeProject(
-    project: Project,
-    getVersion: String? = null,
-    fallbackToLatest: Boolean = true
+    project: Project, getVersion: String? = null, fallbackToLatest: Boolean = true
 ): File {
     redLog("Maybe download Redscript Ide version '$getVersion'")
     var toGet: String? = getVersion
     if (getVersion.isNullOrBlank()) {
         toGet = RedscriptSettings.getRedIDEVersionToGet()
     }
-//    var binaryToUse: File = RedscriptSettings.getBinaryPath().toFile()
     val binaryToUse: File = RedscriptSettings.getBinaryPathDefault(toGet).toFile()
-//    if (!binaryToUse.exists()) {
-//        redLog("Binary path from settings does not exist, using default binary path.")
-//        binaryToUse = RedscriptSettings.getBinaryPathDefault(toGet).toFile()
-//    }
     if (!shouldDownloadIdeBinary(toGet)) {
         redLog("Redscript IDE is already up-to-date, no download needed.")
         return binaryToUse
@@ -207,7 +162,6 @@ fun maybeDownloadRedscriptIdeProject(
 
 //    We will check for new release
     val lastInstalled = RedscriptSettings.getRedIDEVersionInstalled()
-//    val lastInstalled = getRedIDEVersionLastInstalled()
     stopRedscriptLanguageServer()
     Thread.sleep(200)
     val maxRetries = 5
@@ -225,10 +179,8 @@ fun maybeDownloadRedscriptIdeProject(
 
             if (!toGet.isNullOrBlank()) {
                 RedscriptSettings.setRedIDEVersionToGet(release.tagName)
-//                setRedIDEVersionToGetSettings(release.tagName)
             }
             RedscriptSettings.setRedIDEVersionInstalled(release.tagName)
-//            setRedIDEVersionLastInstalled(release.tagName)
             RedscriptSettings.setBinaryPath(binaryToUse.absolutePath)
             binaryToUse.setExecutable(true)
             val msg =
@@ -270,80 +222,3 @@ fun maybeDownloadRedscriptIdeProject(
     throw IllegalStateException("Failed to download Redscript IDE binary after $maxRetries attempts.")
 }
 
-
-//
-//fun maybeDownloadRedscriptIdeProject(project: Project, getVersion: String? = null) : File {
-//    redLog("Maybe download Redscript Ide version '$getVersion'")
-//
-//    val binaryFile = getBinaryPathCacheDir(getVersion).toFile()
-//    if (!shouldDownload(getVersion) && binaryFile.exists()) {
-//        redLog("Redscript IDE is already up-to-date, no download needed.")
-//        return binaryFile
-//    }
-//    val maxRetries = 5
-//    for (retryCount in 0 until maxRetries) {
-//        try {
-//            val release = fetchReleaseInfo(getVersion)
-//            if (release.tagName == getRedIDEVersionLastInstalled() && binaryFile.exists()) {
-//                redLog("Cached Redscript IDE binary version '${release.tagName}' is up-to-date @ ${binaryFile.absolutePath}")
-//                return binaryFile
-//            }
-//            Files.createDirectories(getCacheDir())
-//            stopRedscriptLanguageServer()
-//            Thread.sleep(1000)
-//            doDownload(release, binaryFile)
-//            if (!getVersion.isNullOrBlank()) {
-//                setRedIDEVersionSettings(release.tagName)
-//            }
-//            setRedIDEVersionLastInstalled(release.tagName)
-//            setRedIDEBinaryPathSettings(binaryFile.absolutePath)
-//            binaryFile.setExecutable(true)
-//            val msg = "Redscript IDE binary version '${release.tagName}' downloaded successfully to ${binaryFile.absolutePath}"
-////            notifyRedscript(project, msg)
-//            notifyRedscriptApp(msg)
-//            return binaryFile
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            if (retryCount >= maxRetries - 1) {
-//                redLog("Max retries reached. Aborting download.")
-//                if (binaryFile.exists()) {
-//                    redLog("Failed to fetch release, using cached binary: ${binaryFile.absolutePath}")
-//                    return binaryFile
-//                } else {
-//                    throw e
-//                }
-//            }
-//        }
-//    }
-//    throw IllegalStateException("Failed to download Redscript IDE binary after $maxRetries attempts.")
-//}
-
-
-//fun shouldDownload(version: String?): Boolean {
-//    val installedVersion = getRedIDEVersionLastInstalled() ?: ""
-//    val settingsBinary = getRedIDEBinaryPathSettings()
-//
-//    if (version.equals("user-custom")) {
-//        redLog("Redscript IDE version is set to user-custom, skipping download.")
-//        return false
-//    }
-//    if (settingsBinary.toFile().exists() && (settingsBinary != getBinaryPathCacheDir())) {
-//        redLog("Redscript IDE binary path in settings is non-default, not downloading.")
-//        return false
-//    }
-//
-//    if (installedVersion.isBlank() || installedVersion.equals("latest", ignoreCase = true)) {
-//        redLog("Installed version is blank, will check Redscript IDE version")
-//        return true
-//    }
-//    if (version.isNullOrBlank()) {
-//        redLog("Passed version is null or blank, will check latest Redscript IDE")
-//        return true
-//    }
-//    if (version.isNotBlank() && !version.equals(installedVersion, ignoreCase = true)) {
-//        redLog("Passed version '$version' is different from installed version '$installedVersion', will check Redscript IDE version")
-//        return true
-//    }
-//    redLog("Installed version '$installedVersion' matches passed version '$version', no download needed")
-//    return false
-//}
