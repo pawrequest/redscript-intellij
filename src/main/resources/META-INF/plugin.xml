@@ -8,6 +8,7 @@
     <depends>com.redhat.devtools.lsp4ij</depends>
     <depends>org.jetbrains.plugins.textmate</depends>
 
+
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.pawrequest.redscript.server.RedscriptInitializer"/>
         <notificationGroup
@@ -79,6 +80,11 @@
 
     <!--    lsp     -->
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+<!--        <debugAdapterServer-->
+<!--                id="Redscript"-->
+<!--                name="Redscript DAP Server"-->
+<!--                factoryClass="com.pawrequest.redscript.debug.RedscriptDebugDescriptorFactory"/>-->
+
         <server id="redscript.server"
                 name="RedscriptLanguageServer"
                 factoryClass="com.pawrequest.redscript.server.RedscriptLanguageServerFactory">
@@ -96,7 +102,9 @@
                          languageId="Redscript"
                          serverId="redscript.server"
         />
+
     </extensions>
+
 
 <!--    <applicationListeners>-->
 <!--        <listener class="com.pawrequest.redscript.settings.RedscriptProjectManagerListener"-->
