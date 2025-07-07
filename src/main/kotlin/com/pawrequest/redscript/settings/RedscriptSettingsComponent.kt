@@ -19,7 +19,11 @@ class RedscriptSettingsComponent(private val project: Project) {
     private val _redscriptIdePath = TextFieldWithBrowseButton()
     private val _redscriptIdeVersionToGet = JTextField()
     private var _isInitialized = false // Prevent redundant initialization
-    private val _lastInstalledVersion = JTextField().apply {
+    private val _lastInstalledIdeVersion = JTextField().apply {
+        isEditable = false
+        preferredSize = Dimension(200, 25)
+    }
+    private val _lastInstalledDapVersion = JTextField().apply {
         isEditable = false
         preferredSize = Dimension(200, 25)
     }
@@ -60,20 +64,32 @@ class RedscriptSettingsComponent(private val project: Project) {
         }
 
 
-    private fun addLastInstalled(gridY: Int) {
+    private fun addLastInstalledIde(gridY: Int) {
         constraints.gridx = 0
         constraints.gridy = gridY
         constraints.weightx = 0.0
         val lastInstalledLabel = JLabel("Last Installed Redscript IDE Version:")
-        lastInstalledLabel.labelFor = _lastInstalledVersion
+        lastInstalledLabel.labelFor = _lastInstalledIdeVersion
         panel.add(lastInstalledLabel, constraints)
 
         constraints.gridx = 1
         constraints.weightx = 1.0
-        _lastInstalledVersion.text = RedscriptSettings.getRedIDEVersionInstalled() ?: "Unknown"
-        panel.add(_lastInstalledVersion, constraints)
+        _lastInstalledIdeVersion.text = RedscriptSettings.getRedIDEVersionInstalled() ?: "Unknown"
+        panel.add(_lastInstalledIdeVersion, constraints)
+    }
 
+    private fun addLastInstalledDap( gridY: Int) {
+        constraints.gridx = 0
+        constraints.gridy = gridY
+        constraints.weightx = 0.0
+        val lastInstalledDapLabel = JLabel("Last Installed Redscript DAP Version:")
+        lastInstalledDapLabel.labelFor = _lastInstalledDapVersion
+        panel.add(lastInstalledDapLabel, constraints)
 
+        constraints.gridx = 1
+        constraints.weightx = 1.0
+        _lastInstalledDapVersion.text = RedscriptSettings.getRedDapVersionInstalled() ?: "Unknown"
+        panel.add(_lastInstalledDapVersion, constraints)
     }
 
     private fun addContentRootsButton(gridY: Int) {
@@ -151,8 +167,9 @@ class RedscriptSettingsComponent(private val project: Project) {
         addGameDir(0)
         addRSIDEPath(1)
         addGetVersion(2)
-        addLastInstalled(3)
-        addContentRootsButton(4)
+        addLastInstalledIde(3)
+        addLastInstalledDap(4)
+        addContentRootsButton(5)
         addEmpty()
     }
 }

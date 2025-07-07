@@ -31,14 +31,17 @@ fun githubConnection(url: String): HttpsURLConnection {
     conn.readTimeout = 5000
     return conn
 }
-fun fetchRedscriptDapInfo() : GithubReleaseInfo {
-    val apiUrlStr = "https://github.com/jac3km4/redscript-dap/releases/latest"
+
+fun fetchRedscriptDapInfo(): GithubReleaseInfo {
+    val binaryName = "redscript_dap.dll"
+    val apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-dap/releases/latest"
     redLog("Fetching latest Redscript DAP release info")
-    return fetchReleaseInfo(apiUrlStr)
+    return fetchReleaseInfo(apiUrlStr, binaryName)
 }
 
 fun fetchRedIdeReleaseInfo(version: String? = null): GithubReleaseInfo {
     var apiUrlStr: String
+    val binaryName = RedscriptSettings.getDefaultBinaryName()
     if (version.isNullOrBlank()) {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/latest"
         redLog("Fetching latest release info")
@@ -46,10 +49,30 @@ fun fetchRedIdeReleaseInfo(version: String? = null): GithubReleaseInfo {
         apiUrlStr = "https://api.github.com/repos/jac3km4/redscript-ide/releases/tags/$version"
         redLog("Fetching release info for version: $version")
     }
-    return fetchReleaseInfo(apiUrlStr)
+    return fetchReleaseInfo(apiUrlStr, binaryName)
 }
 
-fun fetchReleaseInfo(apiUrlStr: String): GithubReleaseInfo {
+fun fetchReleaseInfo(apiUrlStr: String, binaryName: String): GithubReleaseInfo {
+    val conn = githubConnection(apiUrlStr)
+    conn.inputStream.bufferedReader().use { reader ->
+        val json = JSONObject(reader.readText())
+        val tagName = json.getString("tag_name")
+        val assets = json.getJSONArray("assets")
+        for (i in 0 until assets.length()) {
+            val asset = assets.getJSONObject(i)
+            if (asset.getString("name") == binaryName) {
+                val downloadUrl = asset.getString("browser_download_url")
+                val release = GithubReleaseInfo(tagName, downloadUrl)
+                redLog("Found Github asset ${release.tagName}")
+                return release
+
+            }
+        }
+        error("No asset named $binaryName found in latest release")
+    }
+}
+
+fun fetchReleaseInfo1(apiUrlStr: String): GithubReleaseInfo {
     val binary = RedscriptSettings.getDefaultBinaryName()
     val conn = githubConnection(apiUrlStr)
     conn.inputStream.bufferedReader().use { reader ->
@@ -70,7 +93,22 @@ fun fetchReleaseInfo(apiUrlStr: String): GithubReleaseInfo {
     }
 }
 
-
+//fun shouldDownloadRedscriptDap(version: String?): Boolean {
+//    val installedVersion = RedscriptSettings.getRedDapVersionInstalled() ?: ""
+//    if (version.isNullOrBlank()) {
+//        redLog("Passed version is null or blank, will check latest Redscript DAP")
+//        return true
+//    } else if (version.equals(installedVersion, ignoreCase = true)) {
+//        redLog("Installed version '$installedVersion' matches passed version '$version', no download needed")
+//        return false
+//    } else if (version.isNotBlank() && !version.equals(installedVersion, ignoreCase = true)) {
+//        redLog("Passed version '$version' is different from installed version '$installedVersion', will check Redscript DAP version")
+//        return true
+//    } else {
+//        redLog("No conditions met for skipping download, will check Redscript DAP version")
+//        return true
+//    }
+//}
 
 fun shouldDownloadIdeBinary(version: String?): Boolean {
     val settingsBinary = RedscriptSettings.getBinaryPath()
@@ -129,6 +167,21 @@ fun doDownload(release: GithubReleaseInfo, binaryFile: File) {
 //fun maybeDownloadRedscriptDAP(project: Project) : File {
 //    val release = chooseRedscriptDAP()
 //    }
+
+fun maybeDownloadRedDap(project: Project): File {
+    val installedVersion = RedscriptSettings.getRedDapVersionInstalled()
+    val latestRelease = fetchRedscriptDapInfo()
+    val binaryToUse: File = RedscriptSettings.getRedDapVersionBinaryPath().toFile()
+    if (latestRelease.tagName == installedVersion) {
+        redLog("Redscript DAP is already up-to-date, no download needed.")
+        return RedscriptSettings.getRedDapVersionBinaryPath().toFile()
+    }
+    redLog("Redscript DAP version '$installedVersion' is different from latest version '${latestRelease.tagName}', downloading...")
+    doDownload(latestRelease, binaryToUse)
+    notifyRedscript(project, "Redscript DAP version '${latestRelease.tagName}' downloaded successfully to ${binaryToUse.absolutePath}")
+    RedscriptSettings.setRedDapVersionInstalled(latestRelease.tagName)
+    return binaryToUse
+}
 
 
 fun maybeDownloadRedscriptIdeProject(
@@ -190,7 +243,11 @@ fun maybeDownloadRedscriptIdeProject(
             if (e is FileNotFoundException) {
                 redLog("File not found during download: ${e.message}")
                 if (fallbackToLatest) {
-                    notifyRedscript(project, "File not found, falling back to latest version.${e.message}.", NotificationType.WARNING)
+                    notifyRedscript(
+                        project,
+                        "File not found, falling back to latest version.${e.message}.",
+                        NotificationType.WARNING
+                    )
                     toGet = null
                     RedscriptSettings.setBinaryPath(null.toString())
                 }

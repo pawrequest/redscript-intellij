@@ -47,6 +47,7 @@ class RedscriptInitializer : ProjectActivity {
             if (!RedscriptState.binaryUpdateChecked) {
                 redLog("Binary unchecked")
                 maybeDownloadRedscriptIdeProject(project, RedscriptSettings.getRedIDEVersionToGet())
+                maybeDownloadRedDap(project)
                 RedscriptState.binaryUpdateChecked = true
             }
         }
