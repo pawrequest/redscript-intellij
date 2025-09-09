@@ -22,7 +22,7 @@ Stage1: mimic/port [vscode_extension](https://github.com/jac3km4/redscript-ide-v
 
 - [x] skeleton project - plugin builds and installs on IDEA Community
 - [x] Target multiple IDEs - working in Pycharm community, Pycharm Pro, IDEA Community  
-  ~~- [x] Publish to Jetbrains Marketplace~~ marketplace dependency resolution currently broken!
+- [x] Publish to Jetbrains Marketplace
 - [x] Language server via [LSP4IJ](https://github.com/redhat-developer/lsp4ij)
   and [redscript-ide](https://github.com/jac3km4/redscript-ide)
 - [x] GoToDefinition / click-thru
@@ -44,8 +44,8 @@ Update IDE to 2025.1.1 or later
 
 `JetBrains Marketplace is experiencing a major bug affecting all plugins with dependencies. Use manual install until they
 fix it.`  
-~~- ## JetBrains Marketplace~~ **broken!**  
-~~- Search 'redscript' in IDE plugins marketplace
+## JetBrains Marketplace~~ **broken!**  
+Search 'redscript' in IDE plugins marketplace
 https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable~~
 
 - ## GitHub
