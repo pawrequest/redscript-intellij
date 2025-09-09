@@ -45,7 +45,7 @@ Update IDE to 2025.1.1 or later
 
 ## JetBrains Marketplace  
 Search 'redscript' in IDE plugins marketplace
-https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable~~
+https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable
 
 - ## GitHub
     - Get plugin zip - either:
