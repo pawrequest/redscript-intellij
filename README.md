@@ -42,9 +42,8 @@ nb. i dont have a clue what i'm doing. use at your own risk.
 
 Update IDE to 2025.1.1 or later
 
-`JetBrains Marketplace is experiencing a major bug affecting all plugins with dependencies. Use manual install until they
-fix it.`  
-## JetBrains Marketplace~~ **broken!**  
+
+## JetBrains Marketplace  
 Search 'redscript' in IDE plugins marketplace
 https://plugins.jetbrains.com/plugin/26709-redscript/versions/stable~~
 
